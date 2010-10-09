@@ -1,0 +1,83 @@
+<?php
+//$Id
+/**
+ * Implementation of hook_install().
+ */
+function fbs_install() {
+  drupal_install_schema('fbs');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function fbs_uninstall() {
+  drupal_uninstall_schema('fbs');
+}
+
+
+/**
+ * Implementation of hook_schema()
+ */
+function fbs_schema() {
+  $schema = array();
+
+  $schema['fbs_presets'] = array(
+    'description' => 'Storage for user-defined fb widgets templates.',
+    'export' => array(
+      'key' => 'name',
+      'identifier' => 'fbs_presets',
+      'default hook' => 'fbs_default_presets',  // Function hook name.
+
+      'api' => array(
+        'owner' => 'fbs',
+        'api' => 'fbs',  // Base name for api include files.
+        'minimum_version' => 1,
+        'current_version' => 1,
+      ),
+    ),
+    'fields' => array(
+      'name' => array(
+        'description' => 'The primary identifier for a widget preset.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'description' => array(
+        'description' => 'Description for this widget preset.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'widget_type' => array(
+        'description' => 'Type of this preset.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      
+      'd_settings' => array(
+        'description' => 'Serialized storage of drupal related widget settings.',
+        'type' => 'text',
+        'serialize' => TRUE,
+      ),
+
+      'fb_settings' => array(
+        'description' => 'Serialized storage of facebook related widget settings',
+        'type' => 'text',
+        'serialize' => TRUE,
+      ),
+     ),
+    'primary key' => array('name'),
+    'indexes' => array(
+      'type' => array('widget_type'),
+    ),
+
+
+    );
+
+   return $schema;
+
+}
