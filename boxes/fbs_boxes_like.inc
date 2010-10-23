@@ -1,6 +1,11 @@
 <?php
 
 class fbs_boxes_like extends boxes_box {
+	
+  public function __construct(){
+   parent::__construct();
+   $this -> fb_plugin_name = 'like';
+  }
   /**
    * Implementation of boxes_content::options_defaults().
    */
