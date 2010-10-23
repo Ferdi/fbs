@@ -17,7 +17,7 @@ $plugin = array(
 );
 
 function fbs_ctools_export_ui_form(&$form, &$form_state){
-  //dpm($form_state);
+  dpm($form_state);
   ctools_include('dependent');
   $export = $form_state['item'];
   
@@ -49,6 +49,22 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
   foreach ( $fb_settings as $k => &$s ) {
     $s['#default_value'] = ! empty($export->fb_settings[$k]) ? $export->fb_settings[$k] : $s['#default_value'];
     $form['fb_settings'][$k] = $s;
+  }
+  
+  // drupal settings
+  $form['d_settings'] = array(
+      '#type' => 'fieldset', 
+      '#title' => t('Drupal settings'), 
+      '#tree' => TRUE 
+  );
+  
+  $d_settings = fbs_d_settings_like();
+
+  foreach ( $d_settings as $k => &$s ) {
+  	if (isset($s['#default_value'])){
+    $s['#default_value'] = ! empty($export->d_settings[$k]) ? $export->d_settings[$k] : $s['#default_value'];
+  	}
+    $form['d_settings'][$k] = $s;
   }
 }
 
