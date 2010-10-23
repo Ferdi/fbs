@@ -13,6 +13,28 @@ function fbs_menu(){
     'page callback' => 'fbs',
     'access arguments' => array('access content'),
   );
+  
+  $items['admin/settings/fb/social'] = array(
+    'type' => MENU_NORMAL_ITEM,
+    'title' => 'Facebook social',
+    'description' => 'Settings for facebook social plugins.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fbs_settings_form'),
+    'file' => 'fbs.admin.inc',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer site configuration'),
+  );
+  
+  $items['admin/settings/fb/social/settings'] = array(
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fbs_settings_form'),
+    'file' => 'fbs.admin.inc',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer site configuration'),
+    'weight' => -10,
+  ); 
   return $items;
 }
 
@@ -119,6 +141,7 @@ function fbs_fbs_default_presets(){
  */
 function fbs_boxes_plugins() {
   $info = array();
+
   $info['fbs_boxes_like'] = array(
     'title' => 'facebook social like',
     'handler' => array(
@@ -189,7 +212,7 @@ function theme_fbs_box($box){
 
   $attrs = $box -> options;
   $attrs = drupal_attributes($attrs);
-  $widget_type = $box -> plugin_key;
+  $widget_type = $box -> fb_plugin_name;
   
   return '<div class="fbs-'.$widget_type.'-widget"><fb:' . $widget_type .' ' . $attrs . '></fb:'.$widget_type.'></div>';
 
@@ -253,7 +276,6 @@ function _map_active_languages() {
   return $mapped;
 }
 
-// API functions
 
 /**
  *  Based on the user settings return the aliased / unaliased version
