@@ -2,7 +2,7 @@
 
 function fbs_definition_likebox_defaults(){
   return array(
-      'pageid' => '', 
+      'href' => '', 
       'width' => 292, 
       'height' => '', 
       'connections' => 10, 
@@ -15,10 +15,10 @@ function fbs_definition_likebox_options_form(){
 
   $form = array();
 
-  $form['pageid'] = array(
+  $form['href'] = array(
     '#type' => 'textfield',
-    '#title' => t('Facebook Page ID'),
-    '#description' => t('The ID of the facebook page for this like box'),
+    '#title' => t('Facebook Page URL'),
+    '#description' => t('The URL of the Facebook Page for this Like box.'),
   );
   
   $form['width'] = array(

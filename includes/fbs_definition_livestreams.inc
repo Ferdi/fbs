@@ -3,10 +3,10 @@
 function fbs_definition_livestream_defaults(){
   return array(
       'app_id' => variable_get('fbs_appid', ''),
-      'width' => 350, 
-      'verb' => 'like', 
-      'font' => 'verdana', 
-      'color' => 'dark' 
+      'width' => 400, 
+      'height' => 500, 
+      'xid' => '', 
+      'via_url' => '' 
   );
 }
 
