@@ -1,71 +1,59 @@
 <?php
 
-function fbs_definition_like_defaults(){
+function fbs_definition_comments_defaults(){
   return array(
-      'layout_style' => 'button_count', 
-      'show_faces' => 0, 
-      'width' => 350, 
-      'verb' => 'like', 
-      'font' => 'verdana', 
-      'color' => 'dark' 
+      'numposts' => 10, 
+      'width' => 550, 
+      'css' => '', 
+      'simple' => 0, 
+      'reverse' => 0, 
+      'publish_feed' => 0, 
   );
 }
 
-function fbs_definition_like_options_form(){
+function fbs_definition_comments_options_form(){
   $form = array();
-  $form['layout_style'] = array(
-      '#type' => 'select', 
-      '#title' => t('Layout style'), 
-      '#description' => t('Determines the size and the amount of the social context next to the button'), 
-      '#options' => array(
-          'standard' => t('standard'), 
-          'button_count' => t('button_count'), 
-          'box_count' => t('box_count') 
-      ) 
-  );
-  
-  $form['show_faces'] = array(
-      '#type' => 'checkbox', 
-      '#title' => t('Show faces'), 
-      '#description' => t('Show profiles pictures below the button') 
+
+
+  $form['numposts'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of posts'),
+    '#description' => t('The maximum number of posts to display. You can set numposts to 0 to not display any comments. (Default value is 10.)'),
   );
   
   $form['width'] = array(
-      '#type' => 'textfield', 
-      '#title' => t('Width'), 
-      '#description' => t('The width of the plugin in pixel') 
+    '#type' => 'textfield',
+    '#title' => t('Width'),
+    '#description' => t('The width of the Comments Box in pixels. (Default value is 550px.)'),
   );
   
-  $form['verb'] = array(
-      '#type' => 'select', 
-      '#title' => t('Verb'), 
-      '#description' => t('The verb to display in the button'), 
-      '#options' => array(
-          'like' => t('like'), 
-          'recommend' => t('recommend') 
-      ) 
+  $form['css'] = array(
+    '#type' => 'textfield',
+    '#title' => t('The URL to your own stylesheet.'),
+    '#description' => t('Note: To provide you with better performance, we cache your stylesheet. If you update your stylesheet, you should use a cachebreaker in the URL to the stylesheet, typically by appending a version number to the .CSS file extension, as in http://www.example.com/my.css?2'),
   );
   
-  $form['font'] = array(
-      '#type' => 'select', 
-      '#title' => t('Font'), 
-      '#description' => t('The font of the plugin'), 
-      '#options' => array(
-          'arial' => t('arial'), 
-          'verdana' => t('verdana') 
-      ) 
+  $form['simple'] = array(
+    '#type' => 'radios',
+    '#title' => 'Simple',
+    '#description' => t('When true, a rounded box does not appear around each post on your site. (Default value is false.)'),
+    '#options' => array(t('False'), t('True')),
   );
   
-  $form['color'] = array(
-      '#type' => 'select', 
-      '#title' => t('Color'), 
-      '#description' => t('The color scheme of the plugin'), 
-      '#options' => array(
-          'dark' => t('dark'), 
-          'light' => t('light'), 
-          'evil' => t('evil') 
-      ) 
+  $form['reverse'] = array(
+    '#type' => 'radios',
+    '#title' => 'Reverse',
+    '#description' => t('When true, reverses order of comments so the most recent one appears at the bottom of the list and the composer appears at the bottom of the page.'),
+    '#options' => array(t('False'), t('True')),
   );
   
+  $form['publish_feed'] = array(
+    '#type' => 'radios',
+    '#title' => 'Publish feed',
+    '#description' => t('Indicates whether the Post comment to my Facebook profile check box is checked. If false, the user must check the check box before the comment can be published to a user\'s Feed'),
+    '#options' => array(t('False'), t('True')),
+  );
+
   return $form;
 }
+

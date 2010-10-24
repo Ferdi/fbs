@@ -1,71 +1,74 @@
 <?php
 
-function fbs_definition_like_defaults(){
+function fbs_definition_recommendations_defaults(){
   return array(
-      'layout_style' => 'button_count', 
-      'show_faces' => 0, 
-      'width' => 350, 
-      'verb' => 'like', 
-      'font' => 'verdana', 
-      'color' => 'dark' 
+      'site' => '', 
+      'width' => 300, 
+      'height' => 300, 
+      'header' => 1, 
+      'colorscheme' => 'light', 
+      'border_color' => '',
+      'font' => 'arial' 
   );
 }
 
-function fbs_definition_like_options_form(){
+function fbs_definition_recommendations_options_form(){
   $form = array();
-  $form['layout_style'] = array(
-      '#type' => 'select', 
-      '#title' => t('Layout style'), 
-      '#description' => t('Determines the size and the amount of the social context next to the button'), 
-      '#options' => array(
-          'standard' => t('standard'), 
-          'button_count' => t('button_count'), 
-          'box_count' => t('box_count') 
-      ) 
-  );
   
-  $form['show_faces'] = array(
-      '#type' => 'checkbox', 
-      '#title' => t('Show faces'), 
-      '#description' => t('Show profiles pictures below the button') 
+  $form['site'] = array(
+      '#type' => 'textfield', 
+      '#title' => t('Domain'), 
+      '#description' => t('The domain for which to show recommendations'), 
   );
   
   $form['width'] = array(
       '#type' => 'textfield', 
       '#title' => t('Width'), 
-      '#description' => t('The width of the plugin in pixel') 
+      '#description' => t('The width of the widget in pixels'), 
   );
   
-  $form['verb'] = array(
+  $form['height'] = array(
+      '#type' => 'textfield', 
+      '#title' => t('Height'), 
+      '#description' => t('The height of the widget in pixels'), 
+  );
+  
+  $form['header'] = array(
+      '#type' => 'checkbox', 
+      '#title' => t('Show the widget header'), 
+      '#description' => t('Show the header in the recommendations widget'), 
+  );
+  
+  $form['colorscheme'] = array(
       '#type' => 'select', 
-      '#title' => t('Verb'), 
-      '#description' => t('The verb to display in the button'), 
+      '#title' => t('Color'), 
+      '#description' => t('The color scheme of the widget'), 
       '#options' => array(
-          'like' => t('like'), 
-          'recommend' => t('recommend') 
+          'dark' => t('dark'), 
+          'light' => t('light') 
       ) 
+  );
+  
+  $form['border_color'] = array(
+      '#type' => 'textfield', 
+      '#title' => t('Border color'), 
+      '#description' => t('The border color of the widget'), 
   );
   
   $form['font'] = array(
       '#type' => 'select', 
       '#title' => t('Font'), 
-      '#description' => t('The font of the plugin'), 
+      '#description' => t('The font of the widget'), 
       '#options' => array(
           'arial' => t('arial'), 
-          'verdana' => t('verdana') 
-      ) 
-  );
-  
-  $form['color'] = array(
-      '#type' => 'select', 
-      '#title' => t('Color'), 
-      '#description' => t('The color scheme of the plugin'), 
-      '#options' => array(
-          'dark' => t('dark'), 
-          'light' => t('light'), 
-          'evil' => t('evil') 
+          'lucida grande' => t('lucida grande'), 
+          'segoe ui' => t('segoe ui'),
+          'tahoma' => t('tahoma'),
+          'trebuchet ms' => t('trebuchet ms'),
+          'verdana', 
       ) 
   );
   
   return $form;
 }
+

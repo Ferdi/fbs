@@ -1,9 +1,8 @@
 <?php
 
-function fbs_definition_like_defaults(){
+function fbs_definition_livestream_defaults(){
   return array(
-      'layout_style' => 'button_count', 
-      'show_faces' => 0, 
+      'app_id' => variable_get('fbs_appid', ''),
       'width' => 350, 
       'verb' => 'like', 
       'font' => 'verdana', 
@@ -11,23 +10,13 @@ function fbs_definition_like_defaults(){
   );
 }
 
-function fbs_definition_like_options_form(){
+function fbs_definition_livestream_options_form(){
   $form = array();
-  $form['layout_style'] = array(
-      '#type' => 'select', 
-      '#title' => t('Layout style'), 
-      '#description' => t('Determines the size and the amount of the social context next to the button'), 
-      '#options' => array(
-          'standard' => t('standard'), 
-          'button_count' => t('button_count'), 
-          'box_count' => t('box_count') 
-      ) 
-  );
   
-  $form['show_faces'] = array(
-      '#type' => 'checkbox', 
-      '#title' => t('Show faces'), 
-      '#description' => t('Show profiles pictures below the button') 
+  $form['app_id'] = array(
+      '#type' => 'textfield', 
+      '#title' => t('App ID'), 
+      '#description' => t('Your facebook application ID or API key') 
   );
   
   $form['width'] = array(
@@ -36,35 +25,28 @@ function fbs_definition_like_options_form(){
       '#description' => t('The width of the plugin in pixel') 
   );
   
-  $form['verb'] = array(
-      '#type' => 'select', 
-      '#title' => t('Verb'), 
-      '#description' => t('The verb to display in the button'), 
-      '#options' => array(
-          'like' => t('like'), 
-          'recommend' => t('recommend') 
-      ) 
+  $form['height'] = array(
+      '#type' => 'textfield', 
+      '#title' => t('Height'), 
+      '#description' => t('The height of the plugin in pixel') 
   );
   
-  $form['font'] = array(
-      '#type' => 'select', 
-      '#title' => t('Font'), 
-      '#description' => t('The font of the plugin'), 
-      '#options' => array(
-          'arial' => t('arial'), 
-          'verdana' => t('verdana') 
-      ) 
+  $form['xid'] = array(
+      '#type' => 'textfield', 
+      '#title' => t('XID'), 
+      '#description' => t('If you have multiple live stream boxes on the same page, specify a unique \'xid\' for each') 
+  );
+
+  $form['via_url'] = array(
+      '#type' => 'textfield', 
+      '#title' => t('Via Attribution URL'), 
+      '#description' => t('The URL that users are redirected to when they click on your app name on a status (if not specified, your Connect URL is used)') 
   );
   
-  $form['color'] = array(
-      '#type' => 'select', 
-      '#title' => t('Color'), 
-      '#description' => t('The color scheme of the plugin'), 
-      '#options' => array(
-          'dark' => t('dark'), 
-          'light' => t('light'), 
-          'evil' => t('evil') 
-      ) 
+  $form['always_post_to_friends'] = array(
+      '#type' => 'checkbox', 
+      '#title' => t('Always post to friends'), 
+      '#description' => t('If set, all user posts will always go to their profile. This option should only be used when users&#039; posts are likely to make sense outside of the context of the event.') 
   );
   
   return $form;
