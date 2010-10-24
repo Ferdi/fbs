@@ -86,10 +86,6 @@ function fbs_ctools_plugin_api($module, $api) {
   if ($module == 'fbs' && $api == 'fbs') {
     return array('version' => 1);
   }
-  //boxes
-  if ($module == 'boxes' && $api == 'plugins') {
-    return array('version' => 1);
-  }
 }
 
 /**
@@ -134,45 +130,6 @@ function fbs_fbs_default_presets(){
 }
 
 
-// boxes 
-/**
- * Implementation of hook_boxes_plugins().
- */
-function fbs_boxes_plugins() {
-  $info = array();
-
-  $info['fbs_boxes_default'] = array(
-    'title' => 'facebook social like',
-    'handler' => array(
-      'class' => 'fbs_boxes_default',
-      'file' => 'fbs_boxes_default.inc',
-      'path' => drupal_get_path('module', 'fbs') .'/boxes',
-      'parent' => 'box',
-    ),
-  );
-  
-  $info['fbs_boxes_like'] = array(
-    'title' => 'facebook social like',
-    'handler' => array(
-      'class' => 'fbs_boxes_like',
-      'file' => 'fbs_boxes_like.inc',
-      'path' => drupal_get_path('module', 'fbs') .'/boxes',
-      'parent' => 'fbs_boxes_default',
-    ),
-  );
-  
-  $info['fbs_boxes_like_box'] = array(
-    'title' => 'facebook social likebox',
-    'handler' => array(
-      'class' => 'fbs_boxes_like_box',
-      'file' => 'fbs_boxes_like_box.inc',
-      'path' => drupal_get_path('module', 'fbs') .'/boxes',
-      'parent' => 'fbs_boxes_default',
-    ),
-  );
-
-  return $info;
-}
 
 /**
  * Implementation of hook_theme
@@ -181,9 +138,6 @@ function fbs_theme() {
   return array(
     'fbs_preset' => array(
        'arguments' => array('preset' => NULL),
-    ),
-    'fbs_box' => array(
-       'arguments' => array('box' => NULL),
     ),
   );
 }
@@ -200,22 +154,7 @@ function theme_fbs_preset($preset){
 
 }
 
-/**
- * returns the fbml content of the widget
- */
-function theme_fbs_box($box){
-  $attrs = drupal_attributes(array_filter($box -> options));
 
-  /**
-   * get widget type from the ctools plugin_key
-   * - fbs_boxes_like -> like
-   * - fbs_boxes_like_box -> like-box
-   */ 
-  $tmp = explode('_', $box -> plugin_key);
-  $widget_type = implode('-', array_slice($tmp,2));
-
-  return '<div class="fbs-'.$widget_type.'-widget"><fb:' . $widget_type .' ' . $attrs . '></fb:'.$widget_type.'></div>';
-}
 
 
 /**

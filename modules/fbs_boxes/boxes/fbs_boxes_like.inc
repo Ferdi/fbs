@@ -27,7 +27,7 @@ class fbs_boxes_like extends fbs_boxes_default {
    */
   public function render() {
     $block = parent::render();
-    $block['content'] = theme_fbs_box($this);
+    $block['content'] = theme_fbs_boxes_box($this);
     return $block;
   }
 }
