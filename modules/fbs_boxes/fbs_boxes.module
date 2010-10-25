@@ -28,16 +28,7 @@ function fbs_boxes_boxes_plugins(){
           'parent' => 'box' 
       ) 
   );
-  
-  $info['fbs_boxes_like'] = array(
-      'title' => 'facebook social like', 
-      'handler' => array(
-          'class' => 'fbs_boxes_like', 
-          'file' => 'fbs_boxes_like.inc', 
-          'path' => drupal_get_path('module', 'fbs_boxes') . '/boxes', 
-          'parent' => 'fbs_boxes_default' 
-      ) 
-  );
+
   
   $info['fbs_boxes_like_box'] = array(
       'title' => 'facebook social likebox', 
