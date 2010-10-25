@@ -1,21 +1,26 @@
 <?php
 
-class fbs_boxes_like extends fbs_boxes_default {
+class fbs_like_boxes_like extends fbs_boxes_default {
+	
+  public $fb_plugin_name;
 
+  protected function __construct() {
+    parent::__construct();
+    $this -> fb_plugin_name = 'like';
+  }
+  
   /**
    * Implementation of boxes_content::options_defaults().
    */
   public function options_defaults() {
-  	fbs_include('fbs_definition_like');
-    return fbs_definition_like_defaults();
+    return fbs_like_like_defaults();
   }
 
   /**
    * Implementation of boxes_content::options_form().
    */
   public function options_form() {
-  	 fbs_include('fbs_definition_like');
-  	 $form = fbs_definition_like_options_form();
+  	 $form = fbs_like_like_options_form();
   	 foreach($form as $key => &$el){
   	   $el['#default_value'] = $this -> options[$key];
   	 }

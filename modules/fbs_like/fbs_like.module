@@ -1,12 +1,12 @@
 <?php
 
-function fbs_like_fbs_plugin_info(){
+function fbs_like_fbs_plugins_info(){
   $info = array();
   $info['like'] = array(
       'name' => 'like', 
       'description' => 'Like button', 
-      'defaults' => '', 
-      'options_form' => '' 
+      'defaults' => fbs_like_like_defaults(), 
+      'options_form' => fbs_like_like_options_form(), 
   );
   
   return $info;
@@ -29,10 +29,10 @@ function fbs_like_ctools_plugin_api($module, $api){
 function fbs_like_boxes_plugins(){
   $info = array();
   
-  $info['fbs_boxes_like'] = array(
+  $info['fbs_like_boxes_like'] = array(
       'title' => 'facebook social like', 
       'handler' => array(
-          'class' => 'fbs_boxes_like', 
+          'class' => 'fbs_like_boxes_like', 
           'file' => 'fbs_boxes_like.inc', 
           'path' => drupal_get_path('module', 'fbs_like') . '/boxes', 
           'parent' => 'fbs_boxes_default' 
@@ -40,4 +40,74 @@ function fbs_like_boxes_plugins(){
   );
   
   return $info;
+}
+
+function fbs_like_like_defaults(){
+  return array(
+      'layout_style' => 'button_count', 
+      'show_faces' => 0, 
+      'width' => 350, 
+      'verb' => 'like', 
+      'font' => 'verdana', 
+      'color' => 'dark' 
+  );
+}
+
+function fbs_like_like_options_form(){
+  $form = array();
+  $form['layout_style'] = array(
+      '#type' => 'select', 
+      '#title' => t('Layout style'), 
+      '#description' => t('Determines the size and the amount of the social context next to the button'), 
+      '#options' => array(
+          'standard' => t('standard'), 
+          'button_count' => t('button_count'), 
+          'box_count' => t('box_count') 
+      ) 
+  );
+  
+  $form['show_faces'] = array(
+      '#type' => 'checkbox', 
+      '#title' => t('Show faces'), 
+      '#description' => t('Show profiles pictures below the button') 
+  );
+  
+  $form['width'] = array(
+      '#type' => 'textfield', 
+      '#title' => t('Width'), 
+      '#description' => t('The width of the plugin in pixel') 
+  );
+  
+  $form['verb'] = array(
+      '#type' => 'select', 
+      '#title' => t('Verb'), 
+      '#description' => t('The verb to display in the button'), 
+      '#options' => array(
+          'like' => t('like'), 
+          'recommend' => t('recommend') 
+      ) 
+  );
+  
+  $form['font'] = array(
+      '#type' => 'select', 
+      '#title' => t('Font'), 
+      '#description' => t('The font of the plugin'), 
+      '#options' => array(
+          'arial' => t('arial'), 
+          'verdana' => t('verdana') 
+      ) 
+  );
+  
+  $form['color'] = array(
+      '#type' => 'select', 
+      '#title' => t('Color'), 
+      '#description' => t('The color scheme of the plugin'), 
+      '#options' => array(
+          'dark' => t('dark'), 
+          'light' => t('light'), 
+          'evil' => t('evil') 
+      ) 
+  );
+  
+  return $form;
 }

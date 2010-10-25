@@ -60,6 +60,7 @@ function fbs_boxes_theme(){
  * returns the fbml content of the widget
  */
 function theme_fbs_boxes_box($box){
+	dpm($box);
   $attrs = drupal_attributes(array_filter($box->options));
   
   /**
