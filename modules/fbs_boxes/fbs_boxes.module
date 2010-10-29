@@ -60,16 +60,8 @@ function fbs_boxes_theme(){
  * returns the fbml content of the widget
  */
 function theme_fbs_boxes_box($box){
-	dpm($box);
   $attrs = drupal_attributes(array_filter($box->options));
-  
-  /**
-   * get widget type from the ctools plugin_key
-   * - fbs_boxes_like -> like
-   * - fbs_boxes_like_box -> like-box
-   */
-  $tmp = explode('_', $box->plugin_key);
-  $widget_type = implode('-', array_slice($tmp, 2));
-  
+
+  $widget_type = $box -> fb_plugin_name;
   return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
 }
