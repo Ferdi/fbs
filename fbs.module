@@ -154,11 +154,18 @@ function fbs_fbs_default_presets(){
 /**
  * Implementation of hook_theme
  */
-function fbs_theme() {
+function fbs_theme(){
   return array(
     'fbs_preset' => array(
-       'arguments' => array('preset' => NULL),
-    ),
+      'arguments' => array(
+        'preset' => NULL 
+      ) 
+    ), 
+    'fbs_box' => array(
+      'arguments' => array(
+        'box' => NULL 
+      ) 
+    ) 
   );
 }
 
@@ -174,7 +181,15 @@ function theme_fbs_preset($preset){
 
 }
 
+/**
+ * returns the fbml content of the widget
+ */
+function theme_fbs_box($box){
+  $attrs = drupal_attributes(array_filter($box->options));
 
+  $widget_type = $box -> fb_plugin_name;
+  return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
+}
 
 
 /**

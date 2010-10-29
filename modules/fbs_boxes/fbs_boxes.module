@@ -18,18 +18,6 @@ function fbs_boxes_ctools_plugin_api($module, $api){
  */
 function fbs_boxes_boxes_plugins(){
   $info = array();
-  
-  $info['fbs_boxes_default'] = array(
-      'title' => '',  // important . We dont /box-add/fbs_boxes_default
-      'handler' => array(
-          'class' => 'fbs_boxes_default', 
-          'file' => 'fbs_boxes_default.inc', 
-          'path' => drupal_get_path('module', 'fbs_boxes') . '/boxes', 
-          'parent' => 'box' 
-      ) 
-  );
-
-  
   $info['fbs_boxes_like_box'] = array(
       'title' => 'facebook social likebox', 
       'handler' => array(
@@ -43,25 +31,5 @@ function fbs_boxes_boxes_plugins(){
   return $info;
 }
 
-/**
- * Implementation of hook_theme
- */
-function fbs_boxes_theme(){
-  return array(
-      'fbs_boxes_box' => array(
-          'arguments' => array(
-              'box' => NULL 
-          ) 
-      ) 
-  );
-}
 
-/**
- * returns the fbml content of the widget
- */
-function theme_fbs_boxes_box($box){
-  $attrs = drupal_attributes(array_filter($box->options));
 
-  $widget_type = $box -> fb_plugin_name;
-  return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
-}
