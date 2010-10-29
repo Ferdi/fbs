@@ -1,6 +1,6 @@
 <?php
 
-class fbs_like_boxes_like extends fbs_boxes_default {
+class fbs_like_box extends fbs_boxes_default {
 	
   public $fb_plugin_name;
 
