@@ -32,8 +32,8 @@ function fbs_like_boxes_plugins(){
   $info['fbs_like_boxes_like'] = array(
       'title' => 'facebook social like', 
       'handler' => array(
-          'class' => 'fbs_like_boxes_like', 
-          'file' => 'fbs_boxes_like.inc', 
+          'class' => 'fbs_like_box', 
+          'file' => 'fbs_like_boxes.inc', 
           'path' => drupal_get_path('module', 'fbs_like'), 
           'parent' => 'fbs_boxes_default' 
       ) 
