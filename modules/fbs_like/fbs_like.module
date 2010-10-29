@@ -34,7 +34,7 @@ function fbs_like_boxes_plugins(){
       'handler' => array(
           'class' => 'fbs_like_boxes_like', 
           'file' => 'fbs_boxes_like.inc', 
-          'path' => drupal_get_path('module', 'fbs_like') . '/boxes', 
+          'path' => drupal_get_path('module', 'fbs_like'), 
           'parent' => 'fbs_boxes_default' 
       ) 
   );
