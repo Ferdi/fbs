@@ -44,18 +44,18 @@ function fbs_like_boxes_plugins(){
 
 function fbs_like_like_defaults(){
   return array(
-      'layout_style' => 'button_count', 
+      'layout' => 'button_count', 
       'show_faces' => 0, 
       'width' => 350, 
-      'verb' => 'like', 
+      'action' => 'like', 
       'font' => 'verdana', 
-      'color' => 'dark' 
+      'colorscheme' => 'dark' 
   );
 }
 
 function fbs_like_like_options_form(){
   $form = array();
-  $form['layout_style'] = array(
+  $form['layout'] = array(
       '#type' => 'select', 
       '#title' => t('Layout style'), 
       '#description' => t('Determines the size and the amount of the social context next to the button'), 
@@ -78,7 +78,7 @@ function fbs_like_like_options_form(){
       '#description' => t('The width of the plugin in pixel') 
   );
   
-  $form['verb'] = array(
+  $form['action'] = array(
       '#type' => 'select', 
       '#title' => t('Verb'), 
       '#description' => t('The verb to display in the button'), 
@@ -98,7 +98,7 @@ function fbs_like_like_options_form(){
       ) 
   );
   
-  $form['color'] = array(
+  $form['colorscheme'] = array(
       '#type' => 'select', 
       '#title' => t('Color'), 
       '#description' => t('The color scheme of the plugin'), 
