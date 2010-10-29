@@ -1,19 +1,19 @@
 <?php
 
-class fbs_like_box extends fbs_boxes_default {
+class fbs_likebox_box extends fbs_boxes_default {
   
   public $fb_plugin_name;
 
   protected function __construct(){
     parent::__construct();
-    $this->fb_plugin_name = 'like';
+    $this->fb_plugin_name = 'like-box';
   }
 
   /**
    * Implementation of boxes_content::options_defaults().
    */
   public function options_defaults(){
-    $info = fbs_like_fbs_plugins_info();
+    $info = fbs_likebox_fbs_plugins_info();
     return $info['like']['defaults'];
   }
 
@@ -21,7 +21,7 @@ class fbs_like_box extends fbs_boxes_default {
    * Implementation of boxes_content::options_form().
    */
   public function options_form(){
-    $info = fbs_like_fbs_plugins_info();
+    $info = fbs_likebox_fbs_plugins_info();
     $form = $info['like']['options_form'];
     
     foreach ( $form as $key => &$el ) {
