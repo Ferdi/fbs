@@ -1,12 +1,13 @@
 <?php
 
 function fbs_like_fbs_plugins_info(){
+  module_load_include('inc', 'fbs_like', 'fbs_like_settings');
   $info = array();
   $info['like'] = array(
       'name' => 'like', 
       'description' => 'Like button', 
-      'defaults' => fbs_like_like_defaults(), 
-      'options_form' => fbs_like_like_options_form(), 
+      'defaults' => _fbs_like_fb_defaults(), 
+      'options_form' => _fbs_like_fb_options_form() 
   );
   
   return $info;
@@ -42,72 +43,3 @@ function fbs_like_boxes_plugins(){
   return $info;
 }
 
-function fbs_like_like_defaults(){
-  return array(
-      'layout' => 'button_count', 
-      'show_faces' => 0, 
-      'width' => 350, 
-      'action' => 'like', 
-      'font' => 'verdana', 
-      'colorscheme' => 'dark' 
-  );
-}
-
-function fbs_like_like_options_form(){
-  $form = array();
-  $form['layout'] = array(
-      '#type' => 'select', 
-      '#title' => t('Layout style'), 
-      '#description' => t('Determines the size and the amount of the social context next to the button'), 
-      '#options' => array(
-          'standard' => t('standard'), 
-          'button_count' => t('button_count'), 
-          'box_count' => t('box_count') 
-      ) 
-  );
-  
-  $form['show_faces'] = array(
-      '#type' => 'checkbox', 
-      '#title' => t('Show faces'), 
-      '#description' => t('Show profiles pictures below the button') 
-  );
-  
-  $form['width'] = array(
-      '#type' => 'textfield', 
-      '#title' => t('Width'), 
-      '#description' => t('The width of the plugin in pixel') 
-  );
-  
-  $form['action'] = array(
-      '#type' => 'select', 
-      '#title' => t('Verb'), 
-      '#description' => t('The verb to display in the button'), 
-      '#options' => array(
-          'like' => t('like'), 
-          'recommend' => t('recommend') 
-      ) 
-  );
-  
-  $form['font'] = array(
-      '#type' => 'select', 
-      '#title' => t('Font'), 
-      '#description' => t('The font of the plugin'), 
-      '#options' => array(
-          'arial' => t('arial'), 
-          'verdana' => t('verdana') 
-      ) 
-  );
-  
-  $form['colorscheme'] = array(
-      '#type' => 'select', 
-      '#title' => t('Color'), 
-      '#description' => t('The color scheme of the plugin'), 
-      '#options' => array(
-          'dark' => t('dark'), 
-          'light' => t('light'), 
-          'evil' => t('evil') 
-      ) 
-  );
-  
-  return $form;
-}
