@@ -1,5 +1,0 @@
-name = fbs boxes
-description = Integration fbs with boxes module
-dependencies[]= fbs
-dependencies[]= boxes
-core = 6.x
