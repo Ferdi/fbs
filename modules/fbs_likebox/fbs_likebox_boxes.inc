@@ -14,7 +14,7 @@ class fbs_likebox_box extends fbs_boxes_default {
    */
   public function options_defaults(){
     $info = fbs_likebox_fbs_plugins_info();
-    return $info['like']['defaults'];
+    return $info['likebox']['defaults'];
   }
 
   /**
@@ -22,7 +22,7 @@ class fbs_likebox_box extends fbs_boxes_default {
    */
   public function options_form(){
     $info = fbs_likebox_fbs_plugins_info();
-    $form = $info['like']['options_form'];
+    $form = $info['likebox']['options_form'];
     
     foreach ( $form as $key => &$el ) {
       $el['#default_value'] = $this->options[$key];

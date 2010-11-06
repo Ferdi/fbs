@@ -77,7 +77,7 @@ function fbs_boxes_plugins(){
       'title' => '',  // important . We dont /box-add/fbs_boxes_default
       'handler' => array(
           'class' => 'fbs_boxes_default', 
-          'file' => 'fbs_boxes_default.inc', 
+          'file' => 'fbs_boxes.inc', 
           'path' => drupal_get_path('module', 'fbs'), 
           'parent' => 'box' 
       ) 

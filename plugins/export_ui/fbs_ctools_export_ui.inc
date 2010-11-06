@@ -13,11 +13,21 @@ $plugin = array(
     'title singular' => t('widget'), 
     'title plural' => t('widgets'), 
     'title singular proper' => t('Widget'), 
-    'title plural proper' => t('Widgets'), 
+    'title plural proper' => t('Widgets') 
 );
 
+/**
+ * submit handler
+ */
+function fbs_ctools_export_ui_form_submit(&$form, &$form_state){
+	dpm($form_state);
+  $type = $form_state['values']['plugin_type']['widget_type'];
+  $form_state['item']->widget_type = $type;
+  $form_state['item']->fb_settings = $form_state['values']['fb_settings_' . $type];
+}
+
 function fbs_ctools_export_ui_form(&$form, &$form_state){
-  dpm($form_state);
+  
   ctools_include('dependent');
   $export = $form_state['item'];
   
@@ -28,92 +38,56 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
       '#description' => t('Description for this preset.') 
   );
   
-  $form['widget_type'] = array(
-      '#title' => t('type'), 
-      '#type' => 'radios', 
-      '#options' => array(
-          'likebox' => 'like box', 
-          'commentbox' => 'comment box' 
-      ), 
-      '#default_value' => ! empty($export->widget_type) ? $export->widget_type : 'likebox', 
-      '#description' => t('Description for this preset.') 
-  );
-  
-  module_load_include('inc', 'fbs', '/includes/fbs_widgets_settings');
-  $form['fb_settings'] = array(
-      '#type' => 'fieldset', 
-      '#title' => t('Facebook widget settings'), 
-      '#tree' => TRUE 
-  );
-  $fb_settings = fbs_fb_settings_like();
-  foreach ( $fb_settings as $k => &$s ) {
-    $s['#default_value'] = ! empty($export->fb_settings[$k]) ? $export->fb_settings[$k] : $s['#default_value'];
-    $form['fb_settings'][$k] = $s;
+  $all_widgets = module_invoke_all('fbs_plugins_info');
+  $options = array();
+  foreach ( $all_widgets as $widget ) {
+    $options[$widget['name']] = $widget['description'];
   }
   
-  // drupal settings
-  $form['d_settings'] = array(
-      '#type' => 'fieldset', 
-      '#title' => t('Drupal settings'), 
-      '#tree' => TRUE 
+  $form['plugin_type'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Facebook plugin type'),
+        '#tree' => TRUE 
+  );
+  $form['plugin_type']['widget_type'] = array(
+      '#title' => t('type'), 
+      '#type' => 'radios', 
+      '#options' => $options, 
+      '#default_value' => ! empty($export->widget_type) ? $export->widget_type : 'like', 
+      '#description' => t('Description for this preset.'), 
+
   );
   
-  $d_settings = fbs_d_settings_like();
-
-  foreach ( $d_settings as $k => &$s ) {
-  	if (isset($s['#default_value'])){
-    $s['#default_value'] = ! empty($export->d_settings[$k]) ? $export->d_settings[$k] : $s['#default_value'];
-  	}
-    $form['d_settings'][$k] = $s;
+  // output all form settings here but show/hide using
+  // ctools 'dependent' plugin
+  
+  foreach ( $all_widgets as $type => $widget ) {
+    $id = 'fbs-settings-' . $type;
+    $wrapper_id = $id . '-wrapper';
+    $form['fb_settings_' . $type] = array(
+        '#type' => 'fieldset', 
+        '#title' => t('%description  - Facebook settings', array('%description' => $widget['description'])), 
+        '#input' => TRUE, 
+        '#process' => array(
+            'ctools_dependent_process' 
+        ), 
+        '#dependency' => array(
+            'radio:plugin_type[widget_type]' => array(
+                $type 
+            ) 
+        ), 
+        '#id' => $id, 
+        '#prefix' => '<div id="' . $wrapper_id . '">', 
+        '#suffix' => '</div>',
+        
+        '#tree' => TRUE,
+    );
+    
+    foreach ( $widget['options_form'] as $k => $v ) {
+      $form['fb_settings_' . $type][$k] = $v;
+      $form['fb_settings_' . $type][$k]['#default_value'] = ! empty($export->fb_settings[$k]) ? $export->fb_settings[$k] : $widget['defaults'][$k];
+    }
+  
   }
 }
 
-/*
-  dpm($form);
- */
-
-  /*
-  $form['fb_settings'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Facebook widget settings'), 
-      '#process' => array(
-          'ctools_dependent_process' 
-      ), 
-      '#dependency' => array(
-          'radio:widget_type' => array(
-              'likebox' 
-          ) 
-      ),
-      '#tree' => TRUE,
-  );
-  */
-  
-  
-  /*
-  $form['fb_settings']['widget_type'] = array(
-      '#title' => t('type'), 
-      '#type' => 'radios', 
-      '#options' => array(
-          'likebox' => 'like box', 
-          'commentbox' => 'comment box' 
-      ), 
-      '#default_value' => ! empty($export->widget_type) ? $export->widget_type : 'likebox', 
-      '#description' => t('Description for this preset.') 
-  );
-
-  $form['fb_settings']['title'] = array(
-      '#title' => t('Title'), 
-      '#type' => 'textfield', 
-      '#default_value' => '', 
-      '#description' => t('If set to normal or tab, enter the text to use for the menu item.'), 
-      '#process' => array(
-          'ctools_dependent_process' 
-      ), 
-      '#dependency' => array(
-          'radio:widget_type' => array(
-              'likebox' 
-          ) 
-      ),
-       '#default_value' => ! empty($export->settings['title']) ? $export-> settings['title'] : 'likebox', 
-  );
-    */
