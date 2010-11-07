@@ -20,7 +20,6 @@ $plugin = array(
  * submit handler
  */
 function fbs_ctools_export_ui_form_submit(&$form, &$form_state){
-	dpm($form_state);
   $type = $form_state['values']['plugin_type']['widget_type'];
   $form_state['item']->widget_type = $type;
   $form_state['item']->fb_settings = $form_state['values']['fb_settings_' . $type];
