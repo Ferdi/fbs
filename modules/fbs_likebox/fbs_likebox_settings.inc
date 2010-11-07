@@ -63,3 +63,50 @@ function _fbs_likebox_fb_options_form(){
   return $form;
 }
 
+function _fbs_likebox_d_settings_form(){
+  $form = array();
+  $form['node_types'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Content types'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['node_types']['fb_social_like_node_types'] = array(
+    '#type' => 'checkboxes',
+    '#description' => t('Select types that will use the facebook like plugin'),
+    '#default_value' => array(),
+    '#options' => node_get_types('names'),
+  );
+  
+  $form['fb_social_like_opengraph_tags'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Output the facebook opengraph tags for the above content types'),
+    '#description' => t('This module has limited support for fb opengraph tags. Uncheck if you are using some other modules that better support opengraph protocol'),
+    '#default_value' =>  1,
+  );
+  
+  $form['widget_location'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Widget location and display'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['widget_location']['fb_social_like_location'] = array(
+    '#type' => 'radios',
+    '#title' => t('widget location'),
+    '#default_value' =>  0,
+    '#options' => array(t('Node links'), t('Node content')),
+    '#description' => t('The widget can be printed in the "links" are of the node or as part of the node content'),
+  );
+  
+  $form['widget_location']['fb_social_like_display_teasers'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show on teasers'),
+    '#default_value' =>  1,
+    '#description' => t('Should the widget be displayed on teasers?'),
+  );
+  return $form;
+}
+
+
+
