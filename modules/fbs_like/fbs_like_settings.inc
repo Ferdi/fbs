@@ -2,6 +2,8 @@
 
 //$Id$
 
+// keep the default separate as they are used by boxes and presets
+
 function _fbs_like_fb_defaults(){
   return array(
       'layout' => 'button_count', 
@@ -23,7 +25,7 @@ function _fbs_like_fb_options_form(){
           'standard' => t('standard'), 
           'button_count' => t('button_count'), 
           'box_count' => t('box_count') 
-      ) 
+      )
   );
   
   $form['show_faces'] = array(
@@ -72,7 +74,8 @@ function _fbs_like_fb_options_form(){
   return $form;
 }
 
-function _fbs_like_d_settings_form(){
+function _fbs_like_d_settings_form($settings){
+
   $form = array();
   $form['node_types'] = array(
     '#type' => 'fieldset',
@@ -80,18 +83,18 @@ function _fbs_like_d_settings_form(){
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-  $form['node_types']['fb_social_like_node_types'] = array(
+  $form['node_types']['types'] = array(
     '#type' => 'checkboxes',
     '#description' => t('Select types that will use the facebook like plugin'),
-    '#default_value' => array(),
+    '#default_value' =>  isset($settings['node_types']['types']) ? array_keys(array_filter($settings['node_types']['types'])): array(),
     '#options' => node_get_types('names'),
   );
   
-  $form['fb_social_like_opengraph_tags'] = array(
+  $form['opengraph_tags'] = array(
     '#type' => 'checkbox',
     '#title' => t('Output the facebook opengraph tags for the above content types'),
     '#description' => t('This module has limited support for fb opengraph tags. Uncheck if you are using some other modules that better support opengraph protocol'),
-    '#default_value' =>  1,
+    '#default_value' =>  isset($settings['opengraph_tags']) ? $settings['opengraph_tags']: 1,
   );
   
   $form['widget_location'] = array(
@@ -100,18 +103,18 @@ function _fbs_like_d_settings_form(){
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-  $form['widget_location']['fb_social_like_location'] = array(
+  $form['widget_location']['location'] = array(
     '#type' => 'radios',
     '#title' => t('widget location'),
-    '#default_value' =>  0,
+    '#default_value' =>  isset($settings['widget_location']['location']) ? $settings['widget_location']['location']: 0,
     '#options' => array(t('Node links'), t('Node content')),
     '#description' => t('The widget can be printed in the "links" are of the node or as part of the node content'),
   );
   
-  $form['widget_location']['fb_social_like_display_teasers'] = array(
+  $form['widget_location']['display_teasers'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show on teasers'),
-    '#default_value' =>  1,
+    '#default_value' =>  isset($settings['widget_location']['display_teasers']) ? $settings['widget_location']['display_teasers']: 1,
     '#description' => t('Should the widget be displayed on teasers?'),
   );
   return $form;

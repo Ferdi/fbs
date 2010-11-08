@@ -8,10 +8,15 @@ function fbs_like_fbs_plugins_info(){
       'description' => 'Like button', 
       'defaults' => _fbs_like_fb_defaults(), 
       'options_form' => _fbs_like_fb_options_form(),
-      'settings_form' => _fbs_like_d_settings_form(),
+      //'settings_form' => _fbs_like_d_settings_form(),
   );
   
   return $info;
+}
+
+function fbs_like_d_settings_form($settings){
+  module_load_include('inc', 'fbs_like', 'fbs_like_settings');
+  return _fbs_like_d_settings_form($settings);
 }
 
 /**
