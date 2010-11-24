@@ -2,6 +2,7 @@
 
 //$Id
 
+
 /**
  * Minimum CTools version needed.
  */
@@ -10,38 +11,50 @@ define('FBS_REQUIRED_CTOOLS_API', '1.7.1');
 function fbs_menu(){
   $items = array();
   $items['fbs'] = array(
-    'title' => 'fbs',
-    'page callback' => 'fbs',
-    'access arguments' => array('access content'),
+    'title' => 'fbs', 
+    'page callback' => 'fbs', 
+    'access arguments' => array(
+      'access content' 
+    ) 
   );
   
   $items['admin/settings/fb/social'] = array(
-    'type' => MENU_NORMAL_ITEM,
-    'title' => 'Facebook social',
-    'description' => 'Settings for facebook social plugins.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('fbs_settings_form'),
-    'file' => 'fbs.admin.inc',
-    'access callback' => 'user_access',
-    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM, 
+    'title' => 'Facebook social', 
+    'description' => 'Settings for facebook social plugins.', 
+    'page callback' => 'drupal_get_form', 
+    'page arguments' => array(
+      'fbs_settings_form' 
+    ), 
+    'file' => 'fbs.admin.inc', 
+    'access callback' => 'user_access', 
+    'access arguments' => array(
+      'administer site configuration' 
+    ) 
   );
   
   $items['admin/settings/fb/social/settings'] = array(
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'title' => 'Settings',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('fbs_settings_form'),
-    'file' => 'fbs.admin.inc',
-    'access callback' => 'user_access',
-    'access arguments' => array('administer site configuration'),
-    'weight' => -10,
-  ); 
+    'type' => MENU_DEFAULT_LOCAL_TASK, 
+    'title' => 'Settings', 
+    'page callback' => 'drupal_get_form', 
+    'page arguments' => array(
+      'fbs_settings_form' 
+    ), 
+    'file' => 'fbs.admin.inc', 
+    'access callback' => 'user_access', 
+    'access arguments' => array(
+      'administer site configuration' 
+    ), 
+    'weight' => - 10 
+  );
   return $items;
 }
 
 function fbs(){
   ctools_include('export');
-  dpm(ctools_export_load_object('fbs_presets', 'names', array('third')));
+  dpm(ctools_export_load_object('fbs_presets', 'names', array(
+    'third' 
+  )));
   dpm(ctools_export_crud_load('fbs_presets', 'third'));
   return 'fbs';
 }
@@ -55,14 +68,14 @@ function fbs_include($file){
  */
 function fbs_fb_plugins(){
   return array(
-    'activity' => t('Activity Feed'),
-    'comments' => t('Comments'),
-    'facepile' => t('Facepile'),
-    'like' => t('Like Button'),
-    'like-box' => t('Like Box'),
-    'live-stream' => t('Live Stream'),
+    'activity' => t('Activity Feed'), 
+    'comments' => t('Comments'), 
+    'facepile' => t('Facepile'), 
+    'like' => t('Like Button'), 
+    'like-box' => t('Like Box'), 
+    'live-stream' => t('Live Stream'), 
     //'loginbutton',
-    'recommendations' => t('Recommendations'),
+    'recommendations' => t('Recommendations') 
   );
 }
 
@@ -74,18 +87,17 @@ function fbs_boxes_plugins(){
   $info = array();
   
   $info['fbs_boxes_default'] = array(
-      'title' => '',  // important . We dont /box-add/fbs_boxes_default
-      'handler' => array(
-          'class' => 'fbs_boxes_default', 
-          'file' => 'fbs_boxes.inc', 
-          'path' => drupal_get_path('module', 'fbs'), 
-          'parent' => 'box' 
-      ) 
+    'title' => '',  // important . We dont /box-add/fbs_boxes_default
+    'handler' => array(
+      'class' => 'fbs_boxes_default', 
+      'file' => 'fbs_boxes.inc', 
+      'path' => drupal_get_path('module', 'fbs'), 
+      'parent' => 'box' 
+    ) 
   );
-
+  
   return $info;
 }
-
 
 function fbs_plugin_defaults($plugin_name){
   fbs_include('fbs_definition_' . $plugin_name);
@@ -99,19 +111,20 @@ function fbs_plugin_options_form($plugin_name){
   return call_user_func($func);
 }
 
-
 /**
  * Implementation of hook_ctools_plugin_api().
  */
-function fbs_ctools_plugin_api($module, $api) {
+function fbs_ctools_plugin_api($module, $api){
   if ($module == 'fbs' && $api == 'fbs') {
-    return array('version' => 1);
+    return array(
+      'version' => 1 
+    );
   }
   
   //boxes
   if ($module == 'boxes' && $api == 'plugins') {
     return array(
-        'version' => 1 
+      'version' => 1 
     );
   }
 }
@@ -119,16 +132,16 @@ function fbs_ctools_plugin_api($module, $api) {
 /**
  * Implementation of hook_ctools_plugin_directory().
  */
-function fbs_ctools_plugin_directory($module, $type) {
+function fbs_ctools_plugin_directory($module, $type){
   // Safety: go away if CTools is not at an appropriate version.
-  if (!module_invoke('ctools', 'api_version', FBS_REQUIRED_CTOOLS_API)) {
+  if (! module_invoke('ctools', 'api_version', FBS_REQUIRED_CTOOLS_API)) {
     return;
   }
-
-  if ($module =='fbs' && $type == 'plugins') {
+  
+  if ($module == 'fbs' && $type == 'plugins') {
     return 'plugins/fbs';
   }
-  elseif ($type =='export_ui') {
+  elseif ($type == 'export_ui') {
     return 'plugins/export_ui';
   }
 }
@@ -143,21 +156,18 @@ function fbs_fbs_default_presets(){
   $fbs_presets->widget_type = 'likebox';
   $fbs_presets->d_settings = FALSE;
   $fbs_presets->fb_settings = array(
-      'layout_style' => 'button_count', 
-      'show_faces' => 0, 
-      'width' => '350', 
-      'verb' => 'like', 
-      'font' => 'verdana', 
-      'color' => 'dark' 
-  );  
-
+    'layout_style' => 'button_count', 
+    'show_faces' => 0, 
+    'width' => '350', 
+    'verb' => 'like', 
+    'font' => 'verdana', 
+    'color' => 'dark' 
+  );
   
   $export['fb_like_default'] = $fbs_presets;
-
+  
   return $export;
 }
-
-
 
 /**
  * Implementation of hook_theme
@@ -182,10 +192,10 @@ function fbs_theme(){
  */
 function theme_fbs_preset($preset){
   
-  $attrs = drupal_attributes(array_filter($preset -> fb_settings));
-  $widget_type = $preset -> widget_type;
+  $attrs = drupal_attributes(array_filter($preset->fb_settings));
+  $widget_type = $preset->widget_type;
   
-  return '<div class="fbs-'.$widget_type.'-widget"><fb:' . $widget_type .' ' . $attrs . '></fb:'.$widget_type.'></div>';
+  return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
 
 }
 
@@ -194,39 +204,38 @@ function theme_fbs_preset($preset){
  */
 function theme_fbs_box($box){
   $attrs = drupal_attributes(array_filter($box->options));
-
-  $widget_type = $box -> fb_plugin_name;
+  
+  $widget_type = $box->fb_plugin_name;
   return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
 }
-
 
 /**
  * Implementation of hook_footer
  */
-function fbs_footer($main = 0) {
+function fbs_footer($main = 0){
   global $language;
-
+  
   $languages = _map_active_languages();
-
+  
   if (fbs_auto_language()) {
     if (array_key_exists($language->language, $languages)) {
       $fb_locale = $languages[$language->language];
-    } else {
+    }
+    else {
       drupal_set_message("There is no mapping for the current language. Using the default locale.");
     }
-  } else {
+  }
+  else {
     $fb_locale = variable_get('fbs_locale', 'en_US');
   }
-
   
   $appid = variable_get('fbs_appid', '');
-
+  
   $output = '<div id="fb-root"></div>';
-  $output .=  
-  "<script type=\"text/javascript\">
+  $output .= "<script type=\"text/javascript\">
      window.fbAsyncInit = function() {
        FB.init({
-         appId: " . drupal_to_js($appid) .",
+         appId: " . drupal_to_js($appid) . ",
          status: true, 
          cookie: true,
          xfbml: true});
@@ -236,7 +245,7 @@ function fbs_footer($main = 0) {
      (function() {
        var e = document.createElement('script'); 
        e.async = true;
-       e.src = document.location.protocol + '//connect.facebook.net/" . $fb_locale  . "/all.js';
+       e.src = document.location.protocol + '//connect.facebook.net/" . $fb_locale . "/all.js';
        document.getElementById('fb-root').appendChild(e);
      }());
   </script>";
@@ -244,19 +253,18 @@ function fbs_footer($main = 0) {
   return $output;
 }
 
-function fbs_auto_language() {
+function fbs_auto_language(){
   return variable_get('fbs_locale_auto', 0);
 }
 
-function _map_active_languages() {
+function _map_active_languages(){
   $languages = language_list();
   $mapped = array();
-  foreach ($languages as $key => $language) {
+  foreach ( $languages as $key => $language ) {
     $mapped[$language->language] = variable_get('fbs_language_' . $language->language, '');
   }
   return $mapped;
 }
-
 
 /**
  *  Based on the user settings return the aliased / unaliased version
@@ -264,7 +272,10 @@ function _map_active_languages() {
  */
 function fbs_url($url = NULL){
   $aliased = variable_get('fbs_urls_mode', 0);
-  return url($url, array('absolute' => TRUE, 'alias' => $aliased ));
+  return url($url, array(
+    'absolute' => TRUE, 
+    'alias' => $aliased 
+  ));
 }
 
 
