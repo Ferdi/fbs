@@ -2,7 +2,7 @@
 
 // $Id$
 $plugin = array(
-  'schema' => 'fbs_presets', 
+  'schema' => 'fbs_preset', 
   'menu' => array(
     'menu item' => 'fbs_presets' 
   ), 
@@ -20,8 +20,8 @@ $plugin = array(
 function fbs_ctools_export_ui_form_submit(&$form, &$form_state){
   $type = $form_state['values']['plugin_type']['widget_type'];
   $form_state['item']->widget_type = $type;
-  $form_state['item']->fb_settings = $form_state['values']['fbs_settings_' . $type]['fb_settings_' . $type];
-  $form_state['item']->d_settings = $form_state['values']['fbs_settings_' . $type]['d_settings_' . $type];
+  $form_state['item']->fb_attrs = $form_state['values']['fbs_settings_' . $type]['fb_attrs_' . $type];
+  $form_state['item']->settings = $form_state['values']['fbs_settings_' . $type]['settings_' . $type];
 }
 
 function fbs_ctools_export_ui_form(&$form, &$form_state){
@@ -89,32 +89,32 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
     // facebook settings
     
 
-    $form['fbs_settings_' . $type]['fb_settings_' . $type] = array(
+    $form['fbs_settings_' . $type]['fb_attrs_' . $type] = array(
       '#type' => 'fieldset', 
       '#title' => 'Facebook settings (options)' 
     );
     
     foreach ( $widget['options_form'] as $k => $v ) {
-      $form['fbs_settings_' . $type]['fb_settings_' . $type][$k] = $v;
-      $form['fbs_settings_' . $type]['fb_settings_' . $type][$k]['#default_value'] = ! empty($export->fb_settings[$k]) ? $export->fb_settings[$k] : $widget['defaults'][$k];
+      $form['fbs_settings_' . $type]['fb_attrs_' . $type][$k] = $v;
+      $form['fbs_settings_' . $type]['fb_attrs_' . $type][$k]['#default_value'] = ! empty($export->fb_attrs[$k]) ? $export->fb_attrs[$k] : $widget['defaults'][$k];
     }
     
     // drupal settings
     
 
-    $form['fbs_settings_' . $type]['d_settings_' . $type] = array(
+    $form['fbs_settings_' . $type]['settings_' . $type] = array(
       '#type' => 'fieldset', 
       '#title' => 'Drupal settings' 
     );
     
-    $func = 'fbs_' . $type . '_d_settings_form';
+    $func = 'fbs_' . $type . '_settings_form';
     if (function_exists($func)) {
-      $fb_settings_form = call_user_func($func, $export->d_settings);
+      $fb_attrs_form = call_user_func($func, $export->settings);
       
-      foreach ( $fb_settings_form as $k => $v ) {
-        $form['fbs_settings_' . $type]['d_settings_' . $type][$k] = $v;
+      foreach ( $fb_attrs_form as $k => $v ) {
+        $form['fbs_settings_' . $type]['settings_' . $type][$k] = $v;
       }
-    }
+    } 
   
   }
 }

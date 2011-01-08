@@ -74,7 +74,7 @@ function _fbs_like_fb_options_form(){
   return $form;
 }
 
-function _fbs_like_d_settings_form($settings){
+function _fbs_like_settings_form($settings){
 
   $form = array();
   $form['node_types'] = array(

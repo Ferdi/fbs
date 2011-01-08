@@ -52,15 +52,53 @@ function fbs_menu(){
 
 function fbs(){
   ctools_include('export');
-  dpm(ctools_export_load_object('fbs_presets', 'names', array(
-    'third' 
-  )));
-  dpm(ctools_export_crud_load('fbs_presets', 'third'));
+  dpm(ctools_export_load_object('fbs_presets'));
+  dpm(ctools_export_crud_load_all('fbs_presets'));
   return 'fbs';
 }
 
 function fbs_include($file){
   ctools_include($file, $module = 'fbs', $dir = 'includes');
+}
+
+function fbs_preset_load($name = NULL, $reset = FALSE){
+  ctools_include('export');
+  if ($reset) {
+    ctools_export_load_object_reset('fbs_preset');
+  }
+  $presets = ctools_export_load_object('fbs_preset', 'all');
+  
+  if (isset($name)) {
+    
+    return isset($presets[$name]) ? $presets[$name] : FALSE;
+  }
+  return $presets;
+}
+
+/**
+ * Implementation of hook_block
+ */
+function fbs_block($op = 'list', $delta = 0, $edit = array()){
+  // load all presets
+  ctools_include('export');
+  $presets = ctools_export_load_object('fbs_preset');
+  
+  if ($op == 'list') {
+  	foreach($presets as $preset) {
+    $blocks[$preset -> name] = array(
+        'info' => $preset -> name . ' block', 
+    );
+
+  	}
+    return $blocks;
+  }
+
+  else if ($op == 'view') {
+    $block['subject'] = t('');
+    $preset = fbs_preset_load($name = $delta, $reset = FALSE);
+    $block['content'] = theme('fbs_preset', $preset); 
+    return $block;
+  }
 }
 
 /**
@@ -154,8 +192,8 @@ function fbs_fbs_default_presets(){
   $fbs_presets->name = 'fb_like_default';
   $fbs_presets->description = 'the default ';
   $fbs_presets->widget_type = 'likebox';
-  $fbs_presets->d_settings = FALSE;
-  $fbs_presets->fb_settings = array(
+  $fbs_presets->settings = FALSE;
+  $fbs_presets->fb_attrs = array(
     'layout_style' => 'button_count', 
     'show_faces' => 0, 
     'width' => '350', 
@@ -191,8 +229,8 @@ function fbs_theme(){
  * returns the fbml content of the widget
  */
 function theme_fbs_preset($preset){
-  
-  $attrs = drupal_attributes(array_filter($preset->fb_settings));
+  dpm($preset);
+  $attrs = drupal_attributes(array_filter($preset->fb_attrs));
   $widget_type = $preset->widget_type;
   
   return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';

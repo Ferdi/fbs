@@ -64,7 +64,7 @@ function _fbs_likebox_fb_options_form(){
 }
 
 /*
-function _fbs_likebox_d_settings_form($settings){
+function _fbs_likebox_settings_form($settings){
   $form = array();
 
   return $form;

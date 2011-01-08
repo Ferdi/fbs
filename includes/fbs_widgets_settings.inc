@@ -1,6 +1,6 @@
 <?php
 
-function fbs_d_settings_like(){
+function fbs_settings_like(){
   $form = array();
   $form['node_types'] = array(
     '#type' => 'fieldset',
@@ -45,7 +45,7 @@ function fbs_d_settings_like(){
   return $form;
 }
 
-function fbs_fb_settings_like(){
+function fbs_fb_attrs_like(){
   $form = array();
   $form['layout_style'] = array(
     '#type' => 'select',

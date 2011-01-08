@@ -14,9 +14,9 @@ function fbs_likebox_fbs_plugins_info(){
 }
 
 /*
-function fbs_likebox_d_settings_form($settings){
+function fbs_likebox_settings_form($settings){
   module_load_include('inc', 'fbs_likebox', 'fbs_likebox_settings');
-  return _fbs_likebox_d_settings_form($settings);
+  return _fbs_likebox_settings_form($settings);
 }
 */
 

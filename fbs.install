@@ -21,11 +21,11 @@ function fbs_uninstall() {
 function fbs_schema() {
   $schema = array();
 
-  $schema['fbs_presets'] = array(
+  $schema['fbs_preset'] = array(
     'description' => 'Storage for user-defined fb widgets templates.',
     'export' => array(
       'key' => 'name',
-      'identifier' => 'fbs_presets',
+      'identifier' => 'fbs_preset',
       'default hook' => 'fbs_default_presets',  // Function hook name.
 
       'api' => array(
@@ -34,6 +34,7 @@ function fbs_schema() {
         'minimum_version' => 1,
         'current_version' => 1,
       ),
+      'load callback' => 'fbs_preset_load',
     ),
     'fields' => array(
       'name' => array(
@@ -58,13 +59,13 @@ function fbs_schema() {
         'default' => '',
       ),
       
-      'd_settings' => array(
+      'settings' => array(
         'description' => 'Serialized storage of drupal related widget settings.',
         'type' => 'text',
         'serialize' => TRUE,
       ),
 
-      'fb_settings' => array(
+      'fb_attrs' => array(
         'description' => 'Serialized storage of facebook related widget settings',
         'type' => 'text',
         'serialize' => TRUE,
