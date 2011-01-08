@@ -24,6 +24,9 @@ function fbs_ctools_export_ui_form_submit(&$form, &$form_state){
   $form_state['item']->settings = $form_state['values']['fbs_settings_' . $type]['settings_' . $type];
 }
 
+/**
+ * The preset add/edit form
+ */
 function fbs_ctools_export_ui_form(&$form, &$form_state){
   
   ctools_include('dependent');
@@ -86,12 +89,12 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
       '#tree' => TRUE 
     );
     
-    // facebook settings
+    // facebook attrs
     
 
     $form['fbs_settings_' . $type]['fb_attrs_' . $type] = array(
       '#type' => 'fieldset', 
-      '#title' => 'Facebook settings (options)' 
+      '#title' => 'Fb widget attributes' 
     );
     
     foreach ( $widget['options_form'] as $k => $v ) {
@@ -114,8 +117,25 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
       foreach ( $fb_attrs_form as $k => $v ) {
         $form['fbs_settings_' . $type]['settings_' . $type][$k] = $v;
       }
+      
+      $form['fbs_settings_' . $type]['settings_' . $type] += _fbs_ctools_export_ui_create_block_form($export);
     } 
+    
+    
   
   }
+}
+
+function _fbs_ctools_export_ui_create_block_form($export){
+	dpm($settings);
+  $form = array();
+  $form['block'] = array(
+    '#type' => 'checkbox',  
+    '#title' => t('Create a block'), 
+    '#description' => t('Create a drupal block that contains this widget.  You have to enable the block manually to show up.'), 
+
+    '#default_value' =>  isset($export -> settings['block']) ? $export -> settings['block'] : 0,
+  );
+  return $form;
 }
 

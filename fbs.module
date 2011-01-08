@@ -80,23 +80,23 @@ function fbs_preset_load($name = NULL, $reset = FALSE){
  */
 function fbs_block($op = 'list', $delta = 0, $edit = array()){
   // load all presets
-  ctools_include('export');
-  $presets = ctools_export_load_object('fbs_preset');
+  $presets = fbs_preset_load();
   
   if ($op == 'list') {
-  	foreach($presets as $preset) {
-    $blocks[$preset -> name] = array(
-        'info' => $preset -> name . ' block', 
-    );
-
-  	}
+    foreach ( $presets as $preset ) {
+      if ($preset->settings['block']) {
+        $blocks[$preset->name] = array(
+            'info' => $preset->name . ' block' 
+        );
+      }
+    }
     return $blocks;
   }
-
+  
   else if ($op == 'view') {
     $block['subject'] = t('');
     $preset = fbs_preset_load($name = $delta, $reset = FALSE);
-    $block['content'] = theme('fbs_preset', $preset); 
+    $block['content'] = theme('fbs_preset', $preset);
     return $block;
   }
 }

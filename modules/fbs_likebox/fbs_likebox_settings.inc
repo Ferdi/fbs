@@ -63,13 +63,19 @@ function _fbs_likebox_fb_options_form(){
   return $form;
 }
 
-/*
+
 function _fbs_likebox_settings_form($settings){
   $form = array();
+  $form['block'] = array(
+    '#type' => 'checkbox',  
+    '#title' => t('Create a block'), 
+    '#description' => t('Create a drupal block that contains this widget.  You have to enable the block manually to show up.'), 
 
+    '#default_value' =>  isset($settings['block']) ? $settings['block'] : 0,
+  );
   return $form;
 }
-*/
+
 
 
 

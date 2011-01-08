@@ -13,12 +13,12 @@ function fbs_likebox_fbs_plugins_info(){
   return $info;
 }
 
-/*
+
 function fbs_likebox_settings_form($settings){
   module_load_include('inc', 'fbs_likebox', 'fbs_likebox_settings');
   return _fbs_likebox_settings_form($settings);
 }
-*/
+
 
 /**
  * Implementation of hook_ctools_plugin_api().
