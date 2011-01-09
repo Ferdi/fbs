@@ -57,9 +57,7 @@ function fbs(){
   return 'fbs';
 }
 
-function fbs_include($file){
-  ctools_include($file, $module = 'fbs', $dir = 'includes');
-}
+
 
 function fbs_preset_load($name = NULL, $reset = FALSE){
   ctools_include('export');
@@ -311,6 +309,9 @@ function _map_active_languages(){
   return $mapped;
 }
 
+
+// API functions
+
 /**
  *  Based on the user settings return the aliased / unaliased version
  *  of a given $url
@@ -323,4 +324,33 @@ function fbs_url($url = NULL){
   ));
 }
 
+/**
+ * Return the default vaules of a certain plugin 
+ * type as defined by facebook
+ * @param $type the plugin type/name (i.e. like).
+ */
+function fbs_attrs_defaults($type){
+  _fbs_include_settings_file($type);
+  $func = '_fbs_' . $type . '_fb_defaults';
+  return call_user_func($func, $settings);
+}
+
+
+function fbs_attrs_form($type){
+  _fbs_include_settings_file($type);
+  $func = '_fbs_' . $type . '_fb_attrs_form';
+  return call_user_func($func, $settings);
+}
+
+function fbs_settings_form($type, $settings){
+  _fbs_include_settings_file($type);
+  $func = '_fbs_' . $type . '_settings_form';
+  return call_user_func($func, $settings);
+}
+
+function _fbs_include_settings_file($type){
+  $module = 'fbs_' . $type;
+  $file = 'fbs_' . $type . '_settings';
+  module_load_include('inc', $module, $file);
+}
 

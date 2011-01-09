@@ -2,16 +2,16 @@
 
 // $Id$
 $plugin = array(
-  'schema' => 'fbs_preset', 
-  'menu' => array(
-    'menu item' => 'fbs_presets' 
-  ), 
-  'title' => t('Facebook social plugins'), 
-  
-  'title singular' => t('widget'), 
-  'title plural' => t('widgets'), 
-  'title singular proper' => t('Widget'), 
-  'title plural proper' => t('Widgets') 
+    'schema' => 'fbs_preset', 
+    'menu' => array(
+        'menu item' => 'fbs_presets' 
+    ), 
+    'title' => t('Facebook social plugins'), 
+    
+    'title singular' => t('widget'), 
+    'title plural' => t('widgets'), 
+    'title singular proper' => t('Widget'), 
+    'title plural proper' => t('Widgets') 
 );
 
 /**
@@ -33,10 +33,10 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
   $export = $form_state['item'];
   
   $form['description'] = array(
-    '#title' => t('description'), 
-    '#type' => 'textfield', 
-    '#default_value' => ! empty($export->description) ? $export->description : '', 
-    '#description' => t('Description for this preset.') 
+      '#title' => t('description'), 
+      '#type' => 'textfield', 
+      '#default_value' => ! empty($export->description) ? $export->description : '', 
+      '#description' => t('Description for this preset.') 
   );
   
   $all_widgets = module_invoke_all('fbs_plugins_info');
@@ -46,56 +46,56 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
   }
   
   $form['plugin_type'] = array(
-    '#type' => 'fieldset', 
-    '#title' => t('Facebook plugin type'), 
-    '#tree' => TRUE 
+      '#type' => 'fieldset', 
+      '#title' => t('Facebook plugin type'), 
+      '#tree' => TRUE 
   );
   
   $form['plugin_type']['widget_type'] = array(
-    '#title' => t('type'), 
-    '#type' => 'radios', 
-    '#options' => $options, 
-    '#default_value' => ! empty($export->widget_type) ? $export->widget_type : 'like', 
-    '#description' => t('Description for this preset.') 
+      '#title' => t('type'), 
+      '#type' => 'radios', 
+      '#options' => $options, 
+      '#default_value' => ! empty($export->widget_type) ? $export->widget_type : 'like', 
+      '#description' => t('Description for this preset.') 
   );
   
   // output all form settings here but show/hide using
   // ctools 'dependent' plugin
   
-
   foreach ( $all_widgets as $type => $widget ) {
     
     // fb settings
     $id = 'fbs-settings-' . $type;
     $wrapper_id = $id . '-wrapper';
     $form['fbs_settings_' . $type] = array(
-      '#type' => 'fieldset', 
-      '#title' => t('%description  - settings', array(
-        '%description' => $widget['description'] 
-      )), 
-      '#input' => TRUE, 
-      '#process' => array(
-        'ctools_dependent_process' 
-      ), 
-      '#dependency' => array(
-        'radio:plugin_type[widget_type]' => array(
-          $type 
-        ) 
-      ), 
-      '#id' => $id, 
-      '#prefix' => '<div id="' . $wrapper_id . '">', 
-      '#suffix' => '</div>', 
-      
-      '#tree' => TRUE 
+        '#type' => 'fieldset', 
+        '#title' => t('%description  - settings', array(
+            '%description' => $widget['description'] 
+        )), 
+        '#input' => TRUE, 
+        '#process' => array(
+            'ctools_dependent_process' 
+        ), 
+        '#dependency' => array(
+            'radio:plugin_type[widget_type]' => array(
+                $type 
+            ) 
+        ), 
+        '#id' => $id, 
+        '#prefix' => '<div id="' . $wrapper_id . '">', 
+        '#suffix' => '</div>', 
+        
+        '#tree' => TRUE 
     );
     
     // facebook attrs
-    
-
     $form['fbs_settings_' . $type]['fb_attrs_' . $type] = array(
-      '#type' => 'fieldset', 
-      '#title' => 'Fb widget attributes' 
+        '#type' => 'fieldset', 
+        '#title' => 'Fb widget attributes' 
     );
+    
+    $widget['options_form'] = fbs_attrs_form($type); // rename options_form to attrs_form
+    $widget['defaults'] = fbs_attrs_defaults($type);
     
     foreach ( $widget['options_form'] as $k => $v ) {
       $form['fbs_settings_' . $type]['fb_attrs_' . $type][$k] = $v;
@@ -103,38 +103,30 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
     }
     
     // drupal settings
-    
-
     $form['fbs_settings_' . $type]['settings_' . $type] = array(
-      '#type' => 'fieldset', 
-      '#title' => 'Drupal settings' 
+        '#type' => 'fieldset', 
+        '#title' => 'Drupal settings' 
     );
     
-    $func = 'fbs_' . $type . '_settings_form';
-    if (function_exists($func)) {
-      $fb_attrs_form = call_user_func($func, $export->settings);
-      
-      foreach ( $fb_attrs_form as $k => $v ) {
-        $form['fbs_settings_' . $type]['settings_' . $type][$k] = $v;
-      }
-      
-      $form['fbs_settings_' . $type]['settings_' . $type] += _fbs_ctools_export_ui_create_block_form($export);
-    } 
+    $fb_attrs_form = fbs_settings_form($type, $export->settings);
     
+    foreach ( $fb_attrs_form as $k => $v ) {
+      $form['fbs_settings_' . $type]['settings_' . $type][$k] = $v;
+    }
     
-  
+    $form['fbs_settings_' . $type]['settings_' . $type] += _fbs_ctools_export_ui_create_block_form($export);
+
   }
 }
 
 function _fbs_ctools_export_ui_create_block_form($export){
-	dpm($settings);
   $form = array();
   $form['block'] = array(
-    '#type' => 'checkbox',  
-    '#title' => t('Create a block'), 
-    '#description' => t('Create a drupal block that contains this widget.  You have to enable the block manually to show up.'), 
-
-    '#default_value' =>  isset($export -> settings['block']) ? $export -> settings['block'] : 0,
+      '#type' => 'checkbox', 
+      '#title' => t('Create a block'), 
+      '#description' => t('Create a drupal block that contains this widget.  You have to enable the block manually to show up.'), 
+      
+      '#default_value' => isset($export->settings['block']) ? $export->settings['block'] : 0 
   );
   return $form;
 }

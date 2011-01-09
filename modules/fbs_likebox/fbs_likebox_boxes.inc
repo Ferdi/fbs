@@ -6,23 +6,21 @@ class fbs_likebox_box extends fbs_boxes_default {
 
   protected function __construct(){
     parent::__construct();
-    $this->fb_plugin_name = 'like-box';
+    $this->fb_plugin_name = 'likebox';
   }
 
   /**
    * Implementation of boxes_content::options_defaults().
    */
   public function options_defaults(){
-    $info = fbs_likebox_fbs_plugins_info();
-    return $info['likebox']['defaults'];
+    return fbs_attrs_defaults('likebox');
   }
 
   /**
    * Implementation of boxes_content::options_form().
    */
   public function options_form(){
-    $info = fbs_likebox_fbs_plugins_info();
-    $form = $info['likebox']['options_form'];
+    $form = fbs_attrs_form('likebox');
     
     foreach ( $form as $key => &$el ) {
       $el['#default_value'] = $this->options[$key];

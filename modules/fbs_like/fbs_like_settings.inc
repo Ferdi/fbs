@@ -15,7 +15,7 @@ function _fbs_like_fb_defaults(){
   );
 }
 
-function _fbs_like_fb_options_form(){
+function _fbs_like_fb_attrs_form(){
   $form = array();
   $form['layout'] = array(
       '#type' => 'select', 

@@ -1,24 +1,13 @@
 <?php
 
 function fbs_likebox_fbs_plugins_info(){
-  module_load_include('inc', 'fbs_likebox', 'fbs_likebox_settings');
   $info = array();
   $info['likebox'] = array(
       'name' => 'likebox', 
       'description' => 'Likebox', 
-      'defaults' => _fbs_likebox_fb_defaults(), 
-      'options_form' => _fbs_likebox_fb_options_form() ,
   );
-  
   return $info;
 }
-
-
-function fbs_likebox_settings_form($settings){
-  module_load_include('inc', 'fbs_likebox', 'fbs_likebox_settings');
-  return _fbs_likebox_settings_form($settings);
-}
-
 
 /**
  * Implementation of hook_ctools_plugin_api().

@@ -13,16 +13,14 @@ class fbs_like_box extends fbs_boxes_default {
    * Implementation of boxes_content::options_defaults().
    */
   public function options_defaults(){
-    $info = fbs_like_fbs_plugins_info();
-    return $info['like']['defaults'];
+    return fbs_attrs_defaults('like');
   }
 
   /**
    * Implementation of boxes_content::options_form().
    */
   public function options_form(){
-    $info = fbs_like_fbs_plugins_info();
-    $form = $info['like']['options_form'];
+    $form = fbs_attrs_form('like');
     
     foreach ( $form as $key => &$el ) {
       $el['#default_value'] = $this->options[$key];

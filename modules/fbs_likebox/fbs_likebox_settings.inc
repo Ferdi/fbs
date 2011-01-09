@@ -13,7 +13,7 @@ function _fbs_likebox_fb_defaults(){
   );
 }
 
-function _fbs_likebox_fb_options_form(){
+function _fbs_likebox_fb_attrs_form(){
   $form = array();
   
   $form['href'] = array(
