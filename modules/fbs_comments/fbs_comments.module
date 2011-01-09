@@ -1,0 +1,44 @@
+<?php
+
+function fbs_comments_fbs_plugins_info(){
+  module_load_include('inc', 'fbs_comments', 'fbs_comments_settings');
+  $info = array();
+  $info['comments'] = array(
+      'name' => 'comments', 
+      'description' => 'comments plugin', 
+  );
+  
+  return $info;
+}
+
+
+/**
+ * Implementation of hook_ctools_plugin_api().
+ */
+function fbs_comments_ctools_plugin_api($module, $api){
+  if ($module == 'boxes' && $api == 'plugins') {
+    return array(
+        'version' => 1 
+    );
+  }
+}
+
+/**
+ * Implementation of hook_boxes_plugins().
+ */
+function fbs_comments_boxes_plugins(){
+  $info = array();
+  
+  $info['fbs_comments_boxes_comments'] = array(
+      'title' => 'facebook social comments', 
+      'handler' => array(
+          'class' => 'fbs_comments_box', 
+          'file' => 'fbs_comments_boxes.inc', 
+          'path' => drupal_get_path('module', 'fbs_comments'), 
+          'parent' => 'fbs_boxes_default' 
+      ) 
+  );
+  
+  return $info;
+}
+
