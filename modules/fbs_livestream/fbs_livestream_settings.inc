@@ -1,6 +1,10 @@
 <?php
 
-function fbs_definition_livestream_defaults(){
+//$Id$
+
+// keep the default separate as they are used by boxes and presets
+
+function _fbs_livestream_fb_defaults(){
   return array(
       'app_id' => variable_get('fbs_appid', ''),
       'width' => 400, 
@@ -10,7 +14,7 @@ function fbs_definition_livestream_defaults(){
   );
 }
 
-function fbs_definition_livestream_options_form(){
+function _fbs_livestream_fb_attrs_form(){
   $form = array();
   
   $form['app_id'] = array(
@@ -50,4 +54,13 @@ function fbs_definition_livestream_options_form(){
   );
   
   return $form;
+
 }
+
+function _fbs_livestream_settings_form($settings){
+  $form = array();
+  
+  return $form;
+}
+
+
