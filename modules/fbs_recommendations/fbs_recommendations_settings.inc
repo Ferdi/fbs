@@ -1,6 +1,10 @@
 <?php
 
-function fbs_definition_recommendations_defaults(){
+//$Id$
+
+// keep the default separate as they are used by boxes and presets
+
+function _fbs_like_fb_defaults(){
   return array(
       'site' => '', 
       'width' => 300, 
@@ -12,7 +16,7 @@ function fbs_definition_recommendations_defaults(){
   );
 }
 
-function fbs_definition_recommendations_options_form(){
+function _fbs_like_fb_attrs_form(){
   $form = array();
   
   $form['site'] = array(
@@ -71,4 +75,11 @@ function fbs_definition_recommendations_options_form(){
   
   return $form;
 }
+
+function _fbs_like_settings_form($settings){
+
+  $form = array();
+  return $form;
+}
+
 
