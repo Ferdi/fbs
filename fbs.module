@@ -10,13 +10,6 @@ define('FBS_REQUIRED_CTOOLS_API', '1.7.1');
 
 function fbs_menu(){
   $items = array();
-  $items['fbs'] = array(
-    'title' => 'fbs', 
-    'page callback' => 'fbs', 
-    'access arguments' => array(
-      'access content' 
-    ) 
-  );
   
   $items['admin/settings/fb/social'] = array(
     'type' => MENU_NORMAL_ITEM, 
@@ -50,15 +43,14 @@ function fbs_menu(){
   return $items;
 }
 
-function fbs(){
-  ctools_include('export');
-  dpm(ctools_export_load_object('fbs_presets'));
-  dpm(ctools_export_crud_load_all('fbs_presets'));
-  return 'fbs';
-}
 
-
-
+/**
+ * load the preset
+ * @param $name
+ *    the preset name
+ * @param $reset
+ *    
+ */
 function fbs_preset_load($name = NULL, $reset = FALSE){
   ctools_include('export');
   if ($reset) {
@@ -106,21 +98,6 @@ function fbs_block($op = 'list', $delta = 0, $edit = array()){
   }
 }
 
-/**
- * Supported facebook plugins
- */
-function fbs_fb_plugins(){
-  return array(
-    'activity' => t('Activity Feed'), 
-    'comments' => t('Comments'), 
-    'facepile' => t('Facepile'), 
-    'like' => t('Like Button'), 
-    'like-box' => t('Like Box'), 
-    'live-stream' => t('Live Stream'), 
-    //'loginbutton',
-    'recommendations' => t('Recommendations') 
-  );
-}
 
 // boxes 
 /**
@@ -142,17 +119,6 @@ function fbs_boxes_plugins(){
   return $info;
 }
 
-function fbs_plugin_defaults($plugin_name){
-  fbs_include('fbs_definition_' . $plugin_name);
-  $func = 'fbs_definition_' . $plugin_name . '_defaults';
-  return call_user_func($func);
-}
-
-function fbs_plugin_options_form($plugin_name){
-  fbs_include('fbs_definition_' . $plugin_name);
-  $func = 'fbs_definition_' . $plugin_name . '_options_form';
-  return call_user_func($func);
-}
 
 /**
  * Implementation of hook_ctools_plugin_api().
@@ -234,12 +200,9 @@ function fbs_theme(){
  * returns the fbml content of the widget
  */
 function theme_fbs_preset($preset){
-  dpm($preset);
   $attrs = drupal_attributes(array_filter($preset->fb_attrs));
   $widget_type = $preset->widget_type;
-  
   return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
-
 }
 
 /**
@@ -247,7 +210,6 @@ function theme_fbs_preset($preset){
  */
 function theme_fbs_box($box){
   $attrs = drupal_attributes(array_filter($box->options));
-  
   $widget_type = $box->fb_plugin_name;
   return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
 }
@@ -335,13 +297,20 @@ function fbs_attrs_defaults($type){
   return call_user_func($func, $settings);
 }
 
-
+/**
+ * Returns the definition form of the fb plugin
+ * @param $type the plugin type/name (i.e. like).
+ */
 function fbs_attrs_form($type){
   _fbs_include_settings_file($type);
   $func = '_fbs_' . $type . '_fb_attrs_form';
   return call_user_func($func, $settings);
 }
 
+/**
+ * Returns the definition form of the (drupal) plugin settings
+ * @param $type the plugin type/name (i.e. like).
+ */
 function fbs_settings_form($type, $settings){
   _fbs_include_settings_file($type);
   $func = '_fbs_' . $type . '_settings_form';
