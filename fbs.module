@@ -317,9 +317,16 @@ function fbs_settings_form($type, $settings){
   return call_user_func($func, $settings);
 }
 
+
+/**
+ * Include the orresponding settings.inc file 
+ * based on the plugin type
+ */
 function _fbs_include_settings_file($type){
   $module = 'fbs_' . $type;
   $file = 'fbs_' . $type . '_settings';
   module_load_include('inc', $module, $file);
 }
+
+
 

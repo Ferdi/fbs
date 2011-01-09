@@ -18,6 +18,7 @@ $plugin = array(
  * submit handler
  */
 function fbs_ctools_export_ui_form_submit(&$form, &$form_state){
+	dpm($form_state);
   $type = $form_state['values']['plugin_type']['widget_type'];
   $form_state['item']->widget_type = $type;
   $form_state['item']->fb_attrs = $form_state['values']['fbs_settings_' . $type]['fb_attrs_' . $type];
@@ -31,6 +32,7 @@ function fbs_ctools_export_ui_form(&$form, &$form_state){
   
   ctools_include('dependent');
   $export = $form_state['item'];
+  dpm($export);
   
   $form['description'] = array(
       '#title' => t('description'), 

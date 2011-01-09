@@ -13,6 +13,45 @@ function fbs_like_fbs_plugins_info(){
   return $info;
 }
 
+/**
+ * Implementation of hook_content_extra_fields.
+ */
+function fbs_like_content_extra_fields($type_name){
+  $presets = fbs_preset_load();
+  foreach ( $presets as $preset ) {
+    if (in_array($type_name, $preset -> settings['node_types']['type']) &&
+        $preset -> settings[widget_location]) {
+        $extras['fbs_like_' . $preset -> name] = array(
+            'label' => t('Facebook social:  like widget'), 
+            'description' => t('The "like" widget field from ' . $preset -> name . ' preset'), 
+            'weight' => - 10 
+        );
+        return $extras;
+      }
+  }
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function fbs_like_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
+  switch ($op) {
+    case 'view' :    
+      if ($node -> status && fbs_like_type($node->type) && variable_get('fbs_like_location', 0)) {
+        if ($a4 || variable_get('fbs_like_display_teasers', 1) && $a3) {
+          
+          $output = theme('fbs_like_widget', fbs_url('node/' . $node->nid));
+          $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fbs_like_widget') : -10;
+          $node->content['fbs_like_widget'] = array(
+              '#weight' => $weight, 
+              '#value' => $output 
+          );
+        }
+      }
+      break;
+  }
+}
+
 
 /**
  * Implementation of hook_ctools_plugin_api().
@@ -42,5 +81,10 @@ function fbs_like_boxes_plugins(){
   );
   
   return $info;
+}
+
+
+function fbs_like_like_presets(){
+  $presets = fbs_preset_load();
 }
 
