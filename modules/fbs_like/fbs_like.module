@@ -1,7 +1,9 @@
 <?php
 
+/**
+ * Implementation of hook fbs_plugins_info
+ */
 function fbs_like_fbs_plugins_info(){
-  module_load_include('inc', 'fbs_like', 'fbs_like_settings');
   $info = array();
   $info['like'] = array(
       'name' => 'like', 

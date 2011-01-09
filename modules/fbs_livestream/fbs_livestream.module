@@ -1,7 +1,9 @@
 <?php
 
+/**
+ * Implementation of hook fbs_plugins_info
+ */
 function fbs_livestream_fbs_plugins_info(){
-  module_load_include('inc', 'fbs_livestream', 'fbs_livestream_settings');
   $info = array();
   $info['livestream'] = array(
       'name' => 'livestream', 

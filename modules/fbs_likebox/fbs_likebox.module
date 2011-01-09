@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Implementation of hook fbs_plugins_info
+ */
 function fbs_likebox_fbs_plugins_info(){
   $info = array();
   $info['likebox'] = array(

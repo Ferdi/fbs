@@ -1,7 +1,9 @@
 <?php
 
+/**
+ * Implementation of hook fbs_plugins_info
+ */
 function fbs_comments_fbs_plugins_info(){
-  module_load_include('inc', 'fbs_comments', 'fbs_comments_settings');
   $info = array();
   $info['comments'] = array(
       'name' => 'comments', 
