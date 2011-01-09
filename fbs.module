@@ -77,6 +77,9 @@ function fbs_preset_load($name = NULL, $reset = FALSE){
 
 /**
  * Implementation of hook_block
+ * 
+ * Each preset could be a block. Most of them we create here.
+ * But submodules may decide to implement the hook_block .
  */
 function fbs_block($op = 'list', $delta = 0, $edit = array()){
   // load all presets
@@ -84,7 +87,11 @@ function fbs_block($op = 'list', $delta = 0, $edit = array()){
   
   if ($op == 'list') {
     foreach ( $presets as $preset ) {
-      if ($preset->settings['block']) {
+      // is any submodule implementing the hook_block ?
+      $module = 'fbs_' . $preset -> type; 
+      $hook = module_hook($module, 'block');
+      
+      if (!$hook && $preset->settings['block']) {
         $blocks[$preset->name] = array(
             'info' => $preset->name . ' block' 
         );
