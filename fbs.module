@@ -24,7 +24,7 @@ function fbs_menu(){
     'description' => 'Settings for facebook social plugins.', 
     'page callback' => 'drupal_get_form', 
     'page arguments' => array(
-      'fbs_settings_form' 
+      'fbs_admin_settings_form' 
     ), 
     'file' => 'fbs.admin.inc', 
     'access callback' => 'user_access', 
@@ -38,7 +38,7 @@ function fbs_menu(){
     'title' => 'Settings', 
     'page callback' => 'drupal_get_form', 
     'page arguments' => array(
-      'fbs_settings_form' 
+      'fbs_admin_settings_form' 
     ), 
     'file' => 'fbs.admin.inc', 
     'access callback' => 'user_access', 
