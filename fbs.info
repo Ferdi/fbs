@@ -1,4 +1,5 @@
 name = fbs
 description = fbs
 dependencies[] = "ctools"
+package = "Facebook Social Plugins"
 core =6.x

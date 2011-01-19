@@ -4,7 +4,7 @@
 
 // keep the default separate as they are used by boxes and presets
 
-function _fbs_like_fb_defaults(){
+function _fbs_recommendations_fb_defaults(){
   return array(
       'site' => '', 
       'width' => 300, 
@@ -16,7 +16,7 @@ function _fbs_like_fb_defaults(){
   );
 }
 
-function _fbs_like_fb_attrs_form(){
+function _fbs_recommendations_fb_attrs_form(){
   $form = array();
   
   $form['site'] = array(
@@ -76,7 +76,7 @@ function _fbs_like_fb_attrs_form(){
   return $form;
 }
 
-function _fbs_like_settings_form($settings){
+function _fbs_recommendations_settings_form($settings){
 
   $form = array();
   return $form;

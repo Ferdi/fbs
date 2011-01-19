@@ -11,6 +11,13 @@ define('FBS_REQUIRED_CTOOLS_API', '1.7.1');
 function fbs_menu(){
   $items = array();
   
+  $items['fbs'] = array(
+    'title' => t('fbs'),
+    'page callback' => 'fbs_fbs',
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );
+  
   $items['admin/settings/fb/social'] = array(
     'type' => MENU_NORMAL_ITEM, 
     'title' => 'Facebook social', 
@@ -43,6 +50,10 @@ function fbs_menu(){
   return $items;
 }
 
+function fbs_fbs(){
+  dpm(fbs_preset_load());
+  return 'fbs';
+}
 
 /**
  * load the preset
@@ -66,6 +77,15 @@ function fbs_preset_load($name = NULL, $reset = FALSE){
 }
 
 /**
+ * filter presets based on come conditions $args
+ * @see ctools_export_load_object()
+ */
+function fbs_presets($args=array()){
+  ctools_include('export');
+  return ctools_export_load_object('fbs_preset', $type = 'conditions', $args = $args);
+}
+
+/**
  * Implementation of hook_block
  * 
  * Each preset could be a block. Most of them we create here.
@@ -73,7 +93,7 @@ function fbs_preset_load($name = NULL, $reset = FALSE){
  */
 function fbs_block($op = 'list', $delta = 0, $edit = array()){
   // load all presets
-  $presets = fbs_preset_load();
+  $presets = fbs_presets(array('disabled' => FALSE));
   
   if ($op == 'list') {
     foreach ( $presets as $preset ) {
@@ -185,7 +205,8 @@ function fbs_theme(){
   return array(
     'fbs_preset' => array(
       'arguments' => array(
-        'preset' => NULL 
+        'preset' => NULL,
+        'extra'  => NULL,
       ) 
     ), 
     'fbs_box' => array(
@@ -199,8 +220,11 @@ function fbs_theme(){
 /**
  * returns the fbml content of the widget
  */
-function theme_fbs_preset($preset){
-  $attrs = drupal_attributes(array_filter($preset->fb_attrs));
+function theme_fbs_preset($preset, $extra = array()){
+  $attrs = array_filter($preset->fb_attrs);
+  $attrs = array_merge($attrs, $extra);
+  $attrs = drupal_attributes($attrs);
+  
   $widget_type = $preset->widget_type;
   return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
 }

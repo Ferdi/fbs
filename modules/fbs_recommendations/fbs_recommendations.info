@@ -1,3 +1,4 @@
 name = fbs recommendations
 description = fbs recommendations
+package = "Facebook Social Plugins"
 core=6.x

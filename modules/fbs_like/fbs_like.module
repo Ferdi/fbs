@@ -14,13 +14,79 @@ function fbs_like_fbs_plugins_info(){
 }
 
 /**
+ * Implementation of hook init
+ * @todo og:image (http://developers.facebook.com/docs/reference/plugins/like)
+ * 
+ */
+function fbs_like_init(){
+  $object = menu_get_object();
+  if (! $object->nid) {
+    return;
+  }
+  
+  $presets = fbs_presets(array(
+      'type' => 'like', 
+      'disabled' => FALSE 
+  ));
+  foreach ( $presets as $preset ) {
+    if ($preset->settings['opengraph_tags'] && fbs_like_type($preset, $object->type)) {
+      $tags = TRUE;
+    }
+  }
+  if ($tags) {
+    //add fbml header meta information 
+    $data = '<meta property="og:title" content="' . check_plain($object->title) . '"/>' . "\n";
+    $data .= '<meta property="og:site_name" content="' . variable_get('site_name', '') . '"/>' . "\n";
+    // @todo maybe look for images/imagefields uploaded/attached to the node ?
+    // $data .= '<meta property="og:image" content="http://ia.media-imdb.com/rock.jpg"/>';
+    drupal_set_html_head($data);
+  
+  }
+}
+
+/**
+ * Implementation of hook_block
+ * 
+ * Each preset could be a block. Most of them we create here.
+ * But submodules may decide to implement the hook_block .
+ */
+function fbs_like_block($op = 'list', $delta = 0, $edit = array()){
+  // load all presets
+  $presets = fbs_presets(array(
+      'type' => 'like', 
+      'disabled' => FALSE 
+  ));
+  
+  if ($op == 'list') {
+    foreach ( $presets as $preset ) {
+      $blocks[$preset->name] = array(
+          'info' => $preset->name . ' block' 
+      );
+    }
+    return $blocks;
+  }
+  
+  else if ($op == 'view') {
+    $block['subject'] = t('');
+    $preset = fbs_preset_load($name = $delta, $reset = FALSE);
+    $url = fbs_url($_GET['q']);
+    $block['content'] = theme('fbs_preset', $preset, array(
+        'href' => $url 
+    ));
+    return $block;
+  }
+}
+
+/**
  * Implementation of hook_content_extra_fields.
  */
 function fbs_like_content_extra_fields($type_name){
-  $presets = fbs_preset_load();
+  $presets = fbs_presets(array(
+      'type' => 'like', 
+      'disabled' => FALSE 
+  ));
   foreach ( $presets as $preset ) {
-    if (in_array($type_name, $preset -> settings['node_types']['type']) &&
-        $preset -> settings[widget_location]) {
+    if (fbs_like_type($preset, $type_name) && $preset -> settings['widget_location']['location']) {
         $extras['fbs_like_' . $preset -> name] = array(
             'label' => t('Facebook social:  like widget'), 
             'description' => t('The "like" widget field from ' . $preset -> name . ' preset'), 
@@ -36,19 +102,67 @@ function fbs_like_content_extra_fields($type_name){
  */
 function fbs_like_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
   switch ($op) {
-    case 'view' :    
-      if ($node -> status && fbs_like_type($node->type) && variable_get('fbs_like_location', 0)) {
-        if ($a4 || variable_get('fbs_like_display_teasers', 1) && $a3) {
-          
-          $output = theme('fbs_like_widget', fbs_url('node/' . $node->nid));
-          $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fbs_like_widget') : -10;
-          $node->content['fbs_like_widget'] = array(
-              '#weight' => $weight, 
-              '#value' => $output 
-          );
+    case 'view' :
+	  $presets = fbs_presets(array(
+	      'type' => 'like', 
+	      'disabled' => FALSE 
+	  ));
+      foreach ( $presets as $preset ) {
+        if ($node->status && fbs_like_type($preset, $node->type) && $preset -> settings['widget_location']['location']) {
+          if ($a4 || $preset -> settings['widget_location']['display_teasers'] && $a3) {
+            
+            $output = theme('fbs_preset', $preset, array('href' => fbs_url('node/' . $node->nid)));
+            $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fbs_like_widget') : - 10;
+            $node->content['fbs_like_' . $preset -> name] = array(
+                '#weight' => $weight, 
+                '#value' => $output 
+            );
+          }
         }
       }
       break;
+  }
+}
+
+/**
+ * Implementation of hook_link
+ */
+function fbs_like_link($type, $object, $teaser = FALSE){
+  $presets = fbs_presets(array(
+      'type' => 'like', 
+      'disabled' => FALSE 
+  ));
+  foreach ( $presets as $preset ) {
+    //only nodes are supported
+    if ('node' != $type) {
+      return;
+    }
+    
+    // dont like unpublished nodes
+    if (! $object->status) {
+      return;
+    }
+    
+    // if no widget on teasers return
+    if ($teaser && ! $preset->settings['widget_location']['display_teasers']) {
+      return;
+    }
+    
+    // widget is not to be displayed in the node links. return
+    if ($preset->settings['widget_location']['location']) {
+      return;
+    }
+    
+    // good to go
+    $links = array();
+    if ($type == 'node' && fbs_like_type($preset, $object -> type)) {
+      $links['fbs_like_' . $preset -> name] = array(
+          'title' => theme('fbs_preset', $preset, array('href' => fbs_url('node/' . $object->nid))), 
+          'html' => TRUE 
+      );
+    }
+    
+    return $links;
   }
 }
 
@@ -83,8 +197,15 @@ function fbs_like_boxes_plugins(){
   return $info;
 }
 
-
-function fbs_like_like_presets(){
-  $presets = fbs_preset_load();
+/**
+ * Does $preset should be shown on node of type $type
+ */
+function fbs_like_type($preset, $type){
+  $types = ($preset->settings['node_types']['types']);
+  if (! is_array($types)) {
+    return FALSE;
+  }
+  
+  return in_array($type, array_values($types));
 }
 

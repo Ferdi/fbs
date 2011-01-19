@@ -1,3 +1,4 @@
 name = fbs likebox
 description = fbs likebox
+package = "Facebook Social Plugins"
 core=6.x
