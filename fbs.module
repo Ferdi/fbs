@@ -80,9 +80,21 @@ function fbs_preset_load($name = NULL, $reset = FALSE){
  * filter presets based on come conditions $args
  * @see ctools_export_load_object()
  */
-function fbs_presets($args=array()){
-  ctools_include('export');
-  return ctools_export_load_object('fbs_preset', $type = 'conditions', $args = $args);
+function fbs_enabled_presets($type = NULL){
+  $result = array();
+  foreach (fbs_preset_load() as $preset) {
+    if (empty($preset->disabled) && (empty($type) || ($preset -> widget_type == $type))) {
+      $result[$preset->name] = $preset;
+    }
+  }
+  return $result;
+}
+
+/**
+ * Wrapper around context_load() that only returns enabled contexts.
+ */
+function context_enabled_contexts($reset = FALSE) {
+
 }
 
 /**

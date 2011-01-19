@@ -1,18 +1,103 @@
 <?php
 
 /**
+ * Implementation of hook_theme
+ */
+function fbs_comments_theme(){
+  return array(
+      'fbs_comments_preset' => array() 
+  );
+}
+
+function theme_fbs_comments_preset($preset){
+  $xid = url($_GET['q'], array(
+      'absolute' => TRUE, 
+      'alias' => TRUE 
+  ));
+  return theme('fbs_preset', $preset, array('xid' => urlencode($xid)));
+}
+
+/**
+ * Implementation of hook_block
+ */
+function fbs_comments_block($op = 'list', $delta = 0, $edit = array()){
+  // load all presets
+  $presets = fbs_enabled_presets('comments');
+  
+  if ($op == 'list') {
+    foreach ( $presets as $preset ) {
+      if ($preset->settings['block']) {
+        $blocks[$preset->name] = array(
+            'info' => $preset->name . ' block' 
+        );
+      }
+    }
+    return $blocks;
+  }
+  
+  else if ($op == 'view') {
+    $block['subject'] = t('');
+    $preset = fbs_preset_load($name = $delta, $reset = FALSE);
+    $block['content'] = theme('fbs_comments_preset', $preset);
+    return $block;
+  }
+}
+
+/**
+ * Implementation of hook_content_extra_fields.
+ */
+function fbs_comments_content_extra_fields($type_name){
+  $presets = fbs_enabled_presets('comments');
+  
+  foreach ( $presets as $preset ) {
+    if (fbs_comments_type($preset, $type_name)) {
+      $extras['fbs_comments_' . $preset->name] = array(
+          'label' => t('Facebook social:  comments widget'), 
+          'description' => t('The "comments" widget field from ' . $preset->name . ' preset'), 
+          'weight' => 20  //sink down
+      );
+      return $extras;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function fbs_comments_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
+  switch ($op) {
+    case 'view' :
+      $presets = fbs_enabled_presets('comments');
+      
+      foreach ( $presets as $preset ) {
+        
+        if ($node->status && fbs_comments_type($preset, $node->type)) {
+          if ($a4) { //only in page view
+            $output = theme('fbs_comments_preset', $preset);
+            $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fbs_comments_' . $preset->name) : 20;
+            $node->content['fbs_comments_' . $preset->name] = array(
+                '#weight' => $weight, 
+                '#value' => $output 
+            );
+          }
+        }
+      }
+      break;
+  }
+}
+
+/**
  * Implementation of hook fbs_plugins_info
  */
 function fbs_comments_fbs_plugins_info(){
   $info = array();
   $info['comments'] = array(
       'name' => 'comments', 
-      'description' => 'comments plugin', 
+      'description' => 'comments plugin' 
   );
   
   return $info;
 }
-
 
 /**
  * Implementation of hook_ctools_plugin_api().
@@ -42,5 +127,17 @@ function fbs_comments_boxes_plugins(){
   );
   
   return $info;
+}
+
+/**
+ * Does $preset should be shown on node of type $type
+ */
+function fbs_comments_type($preset, $type){
+  $types = ($preset->settings['node_types']['types']);
+  if (! is_array($types)) {
+    return FALSE;
+  }
+  
+  return in_array($type, array_values($types));
 }
 

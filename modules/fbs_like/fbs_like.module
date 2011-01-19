@@ -7,7 +7,7 @@ function fbs_like_fbs_plugins_info(){
   $info = array();
   $info['like'] = array(
       'name' => 'like', 
-      'description' => 'Like button', 
+      'description' => 'Like button' 
   );
   
   return $info;
@@ -24,10 +24,7 @@ function fbs_like_init(){
     return;
   }
   
-  $presets = fbs_presets(array(
-      'type' => 'like', 
-      'disabled' => FALSE 
-  ));
+  $presets = fbs_enabled_presets('like');
   foreach ( $presets as $preset ) {
     if ($preset->settings['opengraph_tags'] && fbs_like_type($preset, $object->type)) {
       $tags = TRUE;
@@ -46,22 +43,18 @@ function fbs_like_init(){
 
 /**
  * Implementation of hook_block
- * 
- * Each preset could be a block. Most of them we create here.
- * But submodules may decide to implement the hook_block .
  */
 function fbs_like_block($op = 'list', $delta = 0, $edit = array()){
   // load all presets
-  $presets = fbs_presets(array(
-      'type' => 'like', 
-      'disabled' => FALSE 
-  ));
+  $presets = fbs_enabled_presets('like');
   
   if ($op == 'list') {
     foreach ( $presets as $preset ) {
-      $blocks[$preset->name] = array(
-          'info' => $preset->name . ' block' 
-      );
+      if ($preset->settings['block']) {
+        $blocks[$preset->name] = array(
+            'info' => $preset->name . ' block' 
+        );
+      }
     }
     return $blocks;
   }
@@ -81,19 +74,16 @@ function fbs_like_block($op = 'list', $delta = 0, $edit = array()){
  * Implementation of hook_content_extra_fields.
  */
 function fbs_like_content_extra_fields($type_name){
-  $presets = fbs_presets(array(
-      'type' => 'like', 
-      'disabled' => FALSE 
-  ));
+  $presets = fbs_enabled_presets('like');
   foreach ( $presets as $preset ) {
-    if (fbs_like_type($preset, $type_name) && $preset -> settings['widget_location']['location']) {
-        $extras['fbs_like_' . $preset -> name] = array(
-            'label' => t('Facebook social:  like widget'), 
-            'description' => t('The "like" widget field from ' . $preset -> name . ' preset'), 
-            'weight' => - 10 
-        );
-        return $extras;
-      }
+    if (fbs_like_type($preset, $type_name) && $preset->settings['widget_location']['location']) {
+      $extras['fbs_like_' . $preset->name] = array(
+          'label' => t('Facebook social:  like widget'), 
+          'description' => t('The "like" widget field from ' . $preset->name . ' preset'), 
+          'weight' => - 10 
+      );
+      return $extras;
+    }
   }
 }
 
@@ -103,17 +93,15 @@ function fbs_like_content_extra_fields($type_name){
 function fbs_like_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
   switch ($op) {
     case 'view' :
-	  $presets = fbs_presets(array(
-	      'type' => 'like', 
-	      'disabled' => FALSE 
-	  ));
+    $presets = fbs_enabled_presets('like');
       foreach ( $presets as $preset ) {
-        if ($node->status && fbs_like_type($preset, $node->type) && $preset -> settings['widget_location']['location']) {
-          if ($a4 || $preset -> settings['widget_location']['display_teasers'] && $a3) {
-            
-            $output = theme('fbs_preset', $preset, array('href' => fbs_url('node/' . $node->nid)));
-            $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fbs_like_widget') : - 10;
-            $node->content['fbs_like_' . $preset -> name] = array(
+        if ($node->status && fbs_like_type($preset, $node->type) && $preset->settings['widget_location']['location']) {
+          if ($a4 || $preset->settings['widget_location']['display_teasers'] && $a3) {
+            $output = theme('fbs_preset', $preset, array(
+                'href' => fbs_url('node/' . $node->nid) 
+            ));
+            $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fbs_like_' . $preset->name) : - 10;
+            $node->content['fbs_like_' . $preset->name] = array(
                 '#weight' => $weight, 
                 '#value' => $output 
             );
@@ -128,10 +116,7 @@ function fbs_like_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
  * Implementation of hook_link
  */
 function fbs_like_link($type, $object, $teaser = FALSE){
-  $presets = fbs_presets(array(
-      'type' => 'like', 
-      'disabled' => FALSE 
-  ));
+  $presets = fbs_enabled_presets('like');
   foreach ( $presets as $preset ) {
     //only nodes are supported
     if ('node' != $type) {
@@ -155,9 +140,11 @@ function fbs_like_link($type, $object, $teaser = FALSE){
     
     // good to go
     $links = array();
-    if ($type == 'node' && fbs_like_type($preset, $object -> type)) {
-      $links['fbs_like_' . $preset -> name] = array(
-          'title' => theme('fbs_preset', $preset, array('href' => fbs_url('node/' . $object->nid))), 
+    if ($type == 'node' && fbs_like_type($preset, $object->type)) {
+      $links['fbs_like_' . $preset->name] = array(
+          'title' => theme('fbs_preset', $preset, array(
+              'href' => fbs_url('node/' . $object->nid) 
+          )), 
           'html' => TRUE 
       );
     }
@@ -165,7 +152,6 @@ function fbs_like_link($type, $object, $teaser = FALSE){
     return $links;
   }
 }
-
 
 /**
  * Implementation of hook_ctools_plugin_api().

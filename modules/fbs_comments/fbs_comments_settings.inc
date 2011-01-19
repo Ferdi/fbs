@@ -70,7 +70,7 @@ function _fbs_comments_settings_form($settings){
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-  $form['node_types']['fb_social_comments_node_types'] = array(
+  $form['node_types']['types'] = array(
     '#type' => 'checkboxes',
     '#description' => t('Select the content types that will use fb_comments. NOTE: Drupal comment settings will be ignored for the selected content types'),
     '#default_value' =>  isset($settings['node_types']['fb_social_comments_node_types']) ? $settings['node_types']['fb_social_comments_node_types']: array(),
