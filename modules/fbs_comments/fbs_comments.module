@@ -52,8 +52,8 @@ function fbs_comments_content_extra_fields($type_name){
   foreach ( $presets as $preset ) {
     if (fbs_comments_type($preset, $type_name)) {
       $extras['fbs_comments_' . $preset->name] = array(
-          'label' => t('Facebook social:  comments widget'), 
-          'description' => t('The "comments" widget field from ' . $preset->name . ' preset'), 
+          'label' => t('Facebook social:  comments plugin'), 
+          'description' => t('The "comments" plugin field from ' . $preset->name . ' preset'), 
           'weight' => 20  //sink down
       );
       return $extras;

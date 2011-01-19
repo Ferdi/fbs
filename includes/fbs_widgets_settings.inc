@@ -22,25 +22,25 @@ function fbs_settings_like(){
     '#default_value' =>  1,
   );
   
-  $form['widget_location'] = array(
+  $form['plugin_location'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Widget location and display'),
+    '#title' => t('plugin location and display'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-  $form['widget_location']['fb_social_like_location'] = array(
+  $form['plugin_location']['fb_social_like_location'] = array(
     '#type' => 'radios',
-    '#title' => t('widget location'),
+    '#title' => t('plugin location'),
     '#default_value' =>  0,
     '#options' => array(t('Node links'), t('Node content')),
-    '#description' => t('The widget can be printed in the "links" are of the node or as part of the node content'),
+    '#description' => t('The plugin can be printed in the "links" are of the node or as part of the node content'),
   );
   
-  $form['widget_location']['fb_social_like_display_teasers'] = array(
+  $form['plugin_location']['fb_social_like_display_teasers'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show on teasers'),
     '#default_value' =>  1,
-    '#description' => t('Should the widget be displayed on teasers?'),
+    '#description' => t('Should the plugin be displayed on teasers?'),
   );
   return $form;
 }

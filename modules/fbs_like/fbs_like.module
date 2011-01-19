@@ -76,10 +76,10 @@ function fbs_like_block($op = 'list', $delta = 0, $edit = array()){
 function fbs_like_content_extra_fields($type_name){
   $presets = fbs_enabled_presets('like');
   foreach ( $presets as $preset ) {
-    if (fbs_like_type($preset, $type_name) && $preset->settings['widget_location']['location']) {
+    if (fbs_like_type($preset, $type_name) && $preset->settings['plugin_location']['location']) {
       $extras['fbs_like_' . $preset->name] = array(
-          'label' => t('Facebook social:  like widget'), 
-          'description' => t('The "like" widget field from ' . $preset->name . ' preset'), 
+          'label' => t('Facebook social:  like plugin'), 
+          'description' => t('The "like" plugin field from ' . $preset->name . ' preset'), 
           'weight' => - 10 
       );
       return $extras;
@@ -95,8 +95,8 @@ function fbs_like_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
     case 'view' :
     $presets = fbs_enabled_presets('like');
       foreach ( $presets as $preset ) {
-        if ($node->status && fbs_like_type($preset, $node->type) && $preset->settings['widget_location']['location']) {
-          if ($a4 || $preset->settings['widget_location']['display_teasers'] && $a3) {
+        if ($node->status && fbs_like_type($preset, $node->type) && $preset->settings['plugin_location']['location']) {
+          if ($a4 || $preset->settings['plugin_location']['display_teasers'] && $a3) {
             $output = theme('fbs_preset', $preset, array(
                 'href' => fbs_url('node/' . $node->nid) 
             ));
@@ -128,13 +128,13 @@ function fbs_like_link($type, $object, $teaser = FALSE){
       return;
     }
     
-    // if no widget on teasers return
-    if ($teaser && ! $preset->settings['widget_location']['display_teasers']) {
+    // if no plugin on teasers return
+    if ($teaser && ! $preset->settings['plugin_location']['display_teasers']) {
       return;
     }
     
-    // widget is not to be displayed in the node links. return
-    if ($preset->settings['widget_location']['location']) {
+    // plugin is not to be displayed in the node links. return
+    if ($preset->settings['plugin_location']['location']) {
       return;
     }
     

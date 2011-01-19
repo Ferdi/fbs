@@ -62,7 +62,7 @@ function fbs_admin_settings_form(){
   );
 
   $form['fbs_languages']['fbs_locale_auto'] = array(
-    '#title' => t('Auto translate widget'), 
+    '#title' => t('Auto translate plugin'), 
     '#type' => 'checkbox', 
     '#default_value' => variable_get('fbs_locale_auto', 0),
     '#description' => t('Check to automatically detect current node\'s language based on the settings below. Uncheck this if you want to force the node to use the default facebook locale set earlier'),

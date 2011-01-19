@@ -28,25 +28,25 @@ function _fbs_recommendations_fb_attrs_form(){
   $form['width'] = array(
       '#type' => 'textfield', 
       '#title' => t('Width'), 
-      '#description' => t('The width of the widget in pixels'), 
+      '#description' => t('The width of the plugin in pixels'), 
   );
   
   $form['height'] = array(
       '#type' => 'textfield', 
       '#title' => t('Height'), 
-      '#description' => t('The height of the widget in pixels'), 
+      '#description' => t('The height of the plugin in pixels'), 
   );
   
   $form['header'] = array(
       '#type' => 'checkbox', 
-      '#title' => t('Show the widget header'), 
-      '#description' => t('Show the header in the recommendations widget'), 
+      '#title' => t('Show the plugin header'), 
+      '#description' => t('Show the header in the recommendations plugin'), 
   );
   
   $form['colorscheme'] = array(
       '#type' => 'select', 
       '#title' => t('Color'), 
-      '#description' => t('The color scheme of the widget'), 
+      '#description' => t('The color scheme of the plugin'), 
       '#options' => array(
           'dark' => t('dark'), 
           'light' => t('light') 
@@ -56,13 +56,13 @@ function _fbs_recommendations_fb_attrs_form(){
   $form['border_color'] = array(
       '#type' => 'textfield', 
       '#title' => t('Border color'), 
-      '#description' => t('The border color of the widget'), 
+      '#description' => t('The border color of the plugin'), 
   );
   
   $form['font'] = array(
       '#type' => 'select', 
       '#title' => t('Font'), 
-      '#description' => t('The font of the widget'), 
+      '#description' => t('The font of the plugin'), 
       '#options' => array(
           'arial' => t('arial'), 
           'lucida grande' => t('lucida grande'), 

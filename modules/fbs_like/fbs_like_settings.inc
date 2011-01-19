@@ -97,25 +97,25 @@ function _fbs_like_settings_form($settings){
     '#default_value' =>  isset($settings['opengraph_tags']) ? $settings['opengraph_tags']: 1,
   );
   
-  $form['widget_location'] = array(
+  $form['plugin_location'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Widget location and display'),
+    '#title' => t('plugin location and display'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-  $form['widget_location']['location'] = array(
+  $form['plugin_location']['location'] = array(
     '#type' => 'radios',
-    '#title' => t('widget location'),
-    '#default_value' =>  isset($settings['widget_location']['location']) ? $settings['widget_location']['location']: 0,
+    '#title' => t('plugin location'),
+    '#default_value' =>  isset($settings['plugin_location']['location']) ? $settings['plugin_location']['location']: 0,
     '#options' => array(t('Node links'), t('Node content')),
-    '#description' => t('The widget can be printed in the "links" are of the node or as part of the node content'),
+    '#description' => t('The plugin can be printed in the "links" are of the node or as part of the node content'),
   );
   
-  $form['widget_location']['display_teasers'] = array(
+  $form['plugin_location']['display_teasers'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show on teasers'),
-    '#default_value' =>  isset($settings['widget_location']['display_teasers']) ? $settings['widget_location']['display_teasers']: 1,
-    '#description' => t('Should the widget be displayed on teasers?'),
+    '#default_value' =>  isset($settings['plugin_location']['display_teasers']) ? $settings['plugin_location']['display_teasers']: 1,
+    '#description' => t('Should the plugin be displayed on teasers?'),
   );
   return $form;
 }

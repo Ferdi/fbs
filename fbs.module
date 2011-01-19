@@ -8,6 +8,9 @@
  */
 define('FBS_REQUIRED_CTOOLS_API', '1.7.1');
 
+/**
+ * Implementation of hook_menu
+ */
 function fbs_menu(){
   $items = array();
   
@@ -60,7 +63,6 @@ function fbs_fbs(){
  * @param $name
  *    the preset name
  * @param $reset
- *    
  */
 function fbs_preset_load($name = NULL, $reset = FALSE){
   ctools_include('export');
@@ -83,7 +85,7 @@ function fbs_preset_load($name = NULL, $reset = FALSE){
 function fbs_enabled_presets($type = NULL){
   $result = array();
   foreach (fbs_preset_load() as $preset) {
-    if (empty($preset->disabled) && (empty($type) || ($preset -> widget_type == $type))) {
+    if (empty($preset->disabled) && (empty($type) || ($preset -> plugin_type == $type))) {
       $result[$preset->name] = $preset;
     }
   }
@@ -194,7 +196,7 @@ function fbs_fbs_default_presets(){
   $fbs_presets->api_version = 1;
   $fbs_presets->name = 'fb_like_default';
   $fbs_presets->description = 'the default ';
-  $fbs_presets->widget_type = 'likebox';
+  $fbs_presets->plugin_type = 'likebox';
   $fbs_presets->settings = FALSE;
   $fbs_presets->fb_attrs = array(
     'layout_style' => 'button_count', 
@@ -230,24 +232,24 @@ function fbs_theme(){
 }
 
 /**
- * returns the fbml content of the widget
+ * returns the fbml content of the plugin
  */
 function theme_fbs_preset($preset, $extra = array()){
   $attrs = array_filter($preset->fb_attrs);
   $attrs = array_merge($attrs, $extra);
   $attrs = drupal_attributes($attrs);
   
-  $widget_type = $preset->widget_type;
-  return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
+  $plugin_type = $preset->plugin_type;
+  return '<div class="fbs-' . $plugin_type . '-plugin"><fb:' . $plugin_type . ' ' . $attrs . '></fb:' . $plugin_type . '></div>';
 }
 
 /**
- * returns the fbml content of the widget
+ * returns the fbml content of the plugin
  */
 function theme_fbs_box($box){
   $attrs = drupal_attributes(array_filter($box->options));
-  $widget_type = $box->fb_plugin_name;
-  return '<div class="fbs-' . $widget_type . '-widget"><fb:' . $widget_type . ' ' . $attrs . '></fb:' . $widget_type . '></div>';
+  $plugin_type = $box->fb_plugin_name;
+  return '<div class="fbs-' . $plugin_type . '-plugin"><fb:' . $plugin_type . ' ' . $attrs . '></fb:' . $plugin_type . '></div>';
 }
 
 /**
