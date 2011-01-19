@@ -8,10 +8,10 @@ $plugin = array(
     ), 
     'title' => t('Facebook social plugins'), 
     
-    'title singular' => t('plugin'), 
-    'title plural' => t('plugins'), 
-    'title singular proper' => t('Plugin'), 
-    'title plural proper' => t('Plugins') 
+    'title singular' => t('preset'), 
+    'title plural' => t('presets'), 
+    'title singular proper' => t('Preset'), 
+    'title plural proper' => t('Presets') 
 );
 
 /**
